@@ -3,6 +3,8 @@ import { Route, Routes, Link } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
+import NewBlip from './components/NewBlip';
+import BlipDetail from "./components/BlipDetail";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/new-blip" element={<NewBlip />} />
+        <Route path="/blip/:id" element={<BlipDetail />} />
       </Routes>
     </div>
   );
