@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchGetWithAuth, fetchPutWithAuth } from "../security/fetchWithAuth";
+import { fetchPostWithAuth, fetchPutWithAuth, fetchDeleteWithAuth } from "../security/fetchWithAuth";
 import { useAuth } from "../security/AuthContext";
+import { fetchGet } from "../network/fetcher";
 
 function BlipDetail() {
   const { id } = useParams();
@@ -12,19 +13,32 @@ function BlipDetail() {
   const [imageUrl, setImageUrl] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
+  const [comments, setComments] = useState([]);
+  const [newCommentContent, setNewCommentContent] = useState("");
 
   useEffect(() => {
     const fetchBlip = async () => {
       try {
-        const data = await fetchGetWithAuth(`/api/blips/${id}`);
+        const data = await fetchGet(`/api/blips/${id}`);
         setBlip(data);
         setContent(data.content);
         setImageUrl(data.imageUrl);
       } catch (err) {
-        setError("Failed to fetch blip details. Please try again.");
+        setError(err.message);
       }
     };
+
+    const fetchComments = async () => {
+      try {
+        const data = await fetchGet(`/api/comments?blipid=${id}`);
+        setComments(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+
     fetchBlip();
+    fetchComments();
   }, [id]);
 
   const handleUpdate = async (e) => {
@@ -38,7 +52,40 @@ function BlipDetail() {
       setIsEditing(false);
       setError("");
     } catch (err) {
-      setError("Failed to update the blip. Please try again.");
+      setError(err.message);
+    }
+  };
+
+  const handleDelete = async () => {
+    // Use window.confirm to show a confirmation dialog before proceeding with delete
+    const isConfirmed = window.confirm("Are you sure you want to delete this Blip?");
+    if (isConfirmed) {
+      try {
+        await fetchDeleteWithAuth(`/api/blips/${id}`);
+        navigate("/"); // Redirect to Home page after successful delete
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+  };
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      // Redirect to login if not authenticated
+      navigate("/login");
+      return;
+    }
+    try {
+      const newComment = await fetchPostWithAuth(`/api/comments`, {
+        content: newCommentContent,
+        blipId: id,
+      });
+      setComments([newComment, ...comments]); // Add the new comment to the list
+      setNewCommentContent(""); // Clear the input field
+      setError("");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -84,11 +131,41 @@ function BlipDetail() {
           <p>{blip.content}</p>
           {blip.imageUrl && <img src={blip.imageUrl} alt="Blip" />}
           {user && user.id === blip.user.id && (
-            <button onClick={() => setIsEditing(true)}>Edit</button>
+            <>
+              <button onClick={() => setIsEditing(true)}>Edit</button>
+              <button onClick={handleDelete}>Delete</button>
+            </>
           )}
         </div>
       )}
-      <button onClick={() => navigate("/")}>Back to Home</button>
+
+    <h2>Comments</h2>
+      {comments.length > 0 ? (
+        <ul>
+          {comments.map((comment) => (
+            <li key={comment.id}>
+              <p>{comment.content}</p>
+              <small>
+                Posted by <strong>{comment.user.username}</strong> at:{" "}
+                {new Date(comment.createdAt).toLocaleString()}
+              </small>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No comments yet.</p>
+      )}
+
+      <form onSubmit={handleAddComment}>
+        <textarea
+          value={newCommentContent}
+          onChange={(e) => setNewCommentContent(e.target.value)}
+          placeholder="Write a comment..."
+        />
+        <br />
+        <button type="submit">Add Comment</button>
+      </form>
+
     </div>
   );
 }

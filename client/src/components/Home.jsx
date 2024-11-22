@@ -1,25 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchGet } from '../network/fetcher';
 
 function Home() {
-  const { user, logout } = useAuth(); // Get the user and logout function from AuthContext
+  const { user, logout, isAuthenticated } = useAuth(); // Get the user, logout function, and getBlips function from AuthContext
   const navigate = useNavigate(); // Initialize the navigate function
-  const { getBlips } = useAuth();
   const [blips, setBlips] = useState([]);
   const [error, setError] = useState(null);
 
   const handleLogout = () => {
-    logout(); // Call the logout function
-    navigate('/register'); // Redirect to the Register page
+    logout(); // Call the logout function from AuthContext
+    navigate('/login'); // Redirect to the Login page after logging out
   };
 
   useEffect(() => {
     const fetchBlips = async () => {
       try {
-        const data = await getBlips();
+        const data = await fetchGet('/api/blips');
         setBlips(data);
       } catch (err) {
         setError(err.message);
@@ -28,13 +27,28 @@ function Home() {
     fetchBlips();
   }, []);
 
+  const handleCreateNewBlip = () => {
+    if (isAuthenticated) {
+      navigate('/new-blip');
+    } else {
+      navigate('/login');
+    }
+  }
+
   return (
     <div>
       <h1>Blips</h1>
       {error && <p>{error}</p>}
-      <Link to="/new-blip">
-        <button>Create New Blip</button>
-      </Link>
+      {user && (
+        <div>
+          <p>Hello, {user.username}!</p>
+          <button onClick={handleLogout}>Logout</button> {/* Logout button */}
+        </div>
+      )}
+      {!user && (
+        <p>Please log in to view and create Blips.</p> // Message if the user is not logged in
+      )}
+      <button onClick={handleCreateNewBlip}>Create New Blip</button>
       <ul>
         {blips.map((blip) => (
           <li key={blip.id}>

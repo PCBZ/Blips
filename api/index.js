@@ -23,7 +23,6 @@ export const authenticateToken = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ error: "Access denied. No token provided." });
   }
-  console.log("*****************");
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = payload.userId; // Attach the decoded user information to the request
@@ -116,7 +115,7 @@ app.post("/api/auth/login", async (req, res) => {
     const userData = {
       id: user.id,
       email: user.email,
-      name: user.name,
+      username: user.username,
     };
     res.status(200).json({
       message: "Logged in successfully",
@@ -243,8 +242,6 @@ app.delete("/api/blips/:id", authenticateToken, async (req, res) => {
     if (!existingBlip) {
       return res.status(404).json({ error: "Blip not found." });
     }
-    console.log("existingBlip.userId", existingBlip.userId);
-    console.log("userId", userId);
     if (existingBlip.userId !== userId) {
       return res.status(403).json({ error: "You are not allowed to edit this blip." });
     }
@@ -259,6 +256,71 @@ app.delete("/api/blips/:id", authenticateToken, async (req, res) => {
   }
 });
 
+// GET /api/comments?blipid=:blipid
+app.get("/api/comments", async (req, res) => {
+  const { blipid } = req.query;
+  if (!blipid) {
+    return res.status(400).json({ error: "Blip ID is required." });
+  }
+
+  try {
+    const comments = await prisma.comment.findMany({
+      where: {
+        blipId: Number(blipid),
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        user: {
+          select: { id: true, username: true },
+        },
+      },
+    });
+
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ error: "Failed to fetch comments." });
+  }
+});
+
+app.post("/api/comments", authenticateToken, async (req, res) => {
+  const { blipId, content } = req.body;
+  const userId = req.userId;
+
+  if (!blipId || !content) {
+    return res.status(400).json({ error: "Blip ID and content are required." });
+  }
+
+  try {
+    const existingBlip = await prisma.blip.findUnique({
+      where: { id: Number(blipId) },
+    });
+
+    if (!existingBlip) {
+      return res.status(404).json({ error: "Blip not found." });
+    }
+
+    const newComment = await prisma.comment.create({
+      data: {
+        content,
+        userId,
+        blipId: Number(blipId),
+      },
+      include: {
+        user: {
+          select: { id: true, username: true },
+        },
+      },
+    });
+
+    res.status(201).json(newComment);
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ error: "Failed to add the comment." });
+  }
+});
 
 app.listen(8000, () => {
   console.log("Server running on http://localhost:8000 🎉 🚀");

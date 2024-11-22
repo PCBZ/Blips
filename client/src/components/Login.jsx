@@ -4,17 +4,20 @@ import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const { login, loading, error } = useAuth(); // Get login function and error from the AuthContext
+  const { login, loading } = useAuth(); // Get login function and error from the AuthContext
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     // Call login function from the AuthContext
-    await login(email, password);
-    if (!error) {
+    try {
+      await login(email, password);
       navigate('/');
+    } catch (error) {
+      setError(error.message);
     }
   };
 

@@ -8,12 +8,10 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Keep track of the logged-in user
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false); 
 
   const register = async (username, email, password) => {
-    setLoading(true);
-    setError(null);
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
         method: 'POST',
@@ -27,21 +25,17 @@ export const AuthProvider = ({ children }) => {
         setUser(data.user); // Save user data to the state
         // localStorage.setItem('authToken', data.token); // Save the token in localStorage
         setIsAuthenticated(true);
-        setLoading(false);
       } else {
         setIsAuthenticated(false);
         setUser(null);
         throw new Error('Registration failed. Please try again.');
       }
     } catch (error) {
-      setLoading(false);
-      setError(error.message); // Set error message in state
+      throw error;
     }
   };
 
   const login = async (email, password) => {
-    setLoading(true);
-    setError(null);
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
         method: 'POST',
@@ -54,7 +48,6 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         setUser(data.user); // Save user data to the state
         // localStorage.setItem('authToken', data.token); // Save the token in localStorage
-        setLoading(false);
         setIsAuthenticated(true);
       } else {
         setUser(null);
@@ -62,15 +55,9 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Login failed. Please check your credentials.');
       }
     } catch (error) {
-      setLoading(false);
-      setError(error.message); // Set error message in state
+      throw error;
     }
   };
-
-  // const logout = () => {
-  //   setUser(null);
-  //   localStorage.removeItem('authToken'); // Remove the token on logout
-  // };
 
   const logout = async () => {
     await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
@@ -78,30 +65,11 @@ export const AuthProvider = ({ children }) => {
       credentials: "include",
     });
     setIsAuthenticated(false);
-  };
-
-  const getBlips = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/blips`, {
-        method: 'GET',
-        // credentials: "include",
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        return data; // Return the list of blips
-      } else {
-        throw new Error('Failed to fetch blips');
-      }
-    } catch (error) {
-      setError(error.message);
-      throw error; // Propagate error to the caller
-    }
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout, loading, error, getBlips }}>
+    <AuthContext.Provider value={{ user, register, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
