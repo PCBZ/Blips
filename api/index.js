@@ -67,7 +67,7 @@ app.post("/api/auth/register", async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ userId: newUser.id, username: newUser.username }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '1d',
     });
     res.cookie('token', token, {httpOnly: true, maxAge: 3600000})
 
@@ -108,7 +108,7 @@ app.post("/api/auth/login", async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ userId: user.id, username: user.username }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '1d',
     });
     res.cookie('token', token, {httpOnly: true, maxAge: 3600000})
 
@@ -130,6 +130,20 @@ app.post("/api/auth/login", async (req, res) => {
 app.post("/api/auth/logout", async (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logged out" });
+});
+
+app.get('/api/auth/me', authenticateToken, async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { 
+      id: req.userId 
+    },
+    select: { 
+      id: true, 
+      email: true, 
+      username: true 
+    },
+  });
+  res.json(user);
 });
 
 app.get("/api/blips", async (req, res) => {
@@ -208,14 +222,12 @@ app.put("/api/blips/:id", authenticateToken, async (req, res) => {
     if (!existingBlip) {
       return res.status(404).json({ error: "Blip not found." });
     }
-    console.log("existingBlip.userId", existingBlip.userId);
-    console.log("userId", userId);
     if (existingBlip.userId !== userId) {
       return res.status(403).json({ error: "You are not allowed to edit this blip." });
     }
 
     const updatedBlip = await prisma.blip.update({
-      where: { id: parseInt(id) },
+      where: { id: Number(id) },
       data: { content, imageUrl },
       include: {
         user: {
@@ -246,12 +258,16 @@ app.delete("/api/blips/:id", authenticateToken, async (req, res) => {
       return res.status(403).json({ error: "You are not allowed to edit this blip." });
     }
 
+    await prisma.comment.deleteMany({
+      where: { blipId: Number(id) },
+    });
+
     const deletedBlip = await prisma.blip.delete({
       where: { id: Number(id) }
     });
     res.status(200).json(deletedBlip);
   } catch (error) {
-    console.error("Error updating blip:", error);
+    console.error("Error deleting blip:", error);
     res.status(500).json({ error: "Failed to update the blip." });
   }
 });
@@ -269,7 +285,7 @@ app.get("/api/comments", async (req, res) => {
         blipId: Number(blipid),
       },
       orderBy: {
-        createdAt: "desc",
+        updatedAt: "desc",
       },
       include: {
         user: {
@@ -315,7 +331,42 @@ app.post("/api/comments", authenticateToken, async (req, res) => {
       },
     });
 
-    res.status(201).json(newComment);
+    res.status(200).json(newComment);
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ error: "Failed to add the comment." });
+  }
+});
+
+app.put("/api/comments/:id", authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  const userId = req.userId;
+
+  if (!id || !content) {
+    return res.status(400).json({ error: "Comment ID and content are required." });
+  }
+
+  try {
+    const existingComment = await prisma.comment.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!existingComment) {
+      return res.status(404).json({ error: "Comment not found." });
+    }
+
+    const updatedComment = await prisma.comment.update({
+      where: { id: Number(id) },
+      data: { content },
+      include: {
+        user: {
+          select: { id: true, username: true },
+        },
+      },
+    });
+
+    res.status(201).json(updatedComment);
   } catch (error) {
     console.error("Error adding comment:", error);
     res.status(500).json({ error: "Failed to add the comment." });

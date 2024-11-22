@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 const AuthContext = createContext();
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -9,7 +9,38 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Keep track of the logged-in user
   const [loading, setLoading] = useState(false);
   // const [error, setError] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Run on app initialization to check login status
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/me`, {
+          method: 'GET',
+          credentials: 'include', // Include cookies for authentication
+        });
+
+        console.log(response);
+        if (response.ok) {
+          const user = await response.json();
+          setUser(user); // Restore user data to the state
+          console.log(user);
+          setIsAuthenticated(true);
+        } else {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.error('Failed to check auth status:', error);
+        setUser(null);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false); // End the loading state
+      }
+    };
+    checkAuthStatus();
+  }, []);
 
   const register = async (username, email, password) => {
     try {

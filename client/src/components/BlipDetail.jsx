@@ -7,7 +7,7 @@ import { fetchGet } from "../network/fetcher";
 function BlipDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth(); // Get the current logged-in user from AuthContext
+  const { user } = useAuth();
   const [blip, setBlip] = useState(null);
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -15,6 +15,8 @@ function BlipDetail() {
   const [error, setError] = useState("");
   const [comments, setComments] = useState([]);
   const [newCommentContent, setNewCommentContent] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentContent, setEditingCommentContent] = useState("");
 
   useEffect(() => {
     const fetchBlip = async () => {
@@ -35,7 +37,7 @@ function BlipDetail() {
       } catch (err) {
         setError(err.message);
       }
-    }
+    };
 
     fetchBlip();
     fetchComments();
@@ -57,12 +59,11 @@ function BlipDetail() {
   };
 
   const handleDelete = async () => {
-    // Use window.confirm to show a confirmation dialog before proceeding with delete
     const isConfirmed = window.confirm("Are you sure you want to delete this Blip?");
     if (isConfirmed) {
       try {
         await fetchDeleteWithAuth(`/api/blips/${id}`);
-        navigate("/"); // Redirect to Home page after successful delete
+        navigate("/");
       } catch (err) {
         setError(err.message);
       }
@@ -72,7 +73,6 @@ function BlipDetail() {
   const handleAddComment = async (e) => {
     e.preventDefault();
     if (!user) {
-      // Redirect to login if not authenticated
       navigate("/login");
       return;
     }
@@ -81,8 +81,31 @@ function BlipDetail() {
         content: newCommentContent,
         blipId: id,
       });
-      setComments([newComment, ...comments]); // Add the new comment to the list
-      setNewCommentContent(""); // Clear the input field
+      setComments([newComment, ...comments]);
+      setNewCommentContent("");
+      setError("");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleEditComment = (comment) => {
+    setEditingCommentId(comment.id);
+    setEditingCommentContent(comment.content);
+  };
+
+  const handleUpdateComment = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedComment = await fetchPutWithAuth(`/api/comments/${editingCommentId}`, {
+        content: editingCommentContent,
+      });
+      setComments( (oldComments) => {
+        const newComments = oldComments.filter((comment) => comment.id !== editingCommentId);
+        return [updatedComment, ...newComments];
+      });
+      setEditingCommentId(null);
+      setEditingCommentContent("");
       setError("");
     } catch (err) {
       setError(err.message);
@@ -139,16 +162,38 @@ function BlipDetail() {
         </div>
       )}
 
-    <h2>Comments</h2>
+      <h2>Comments</h2>
       {comments.length > 0 ? (
         <ul>
           {comments.map((comment) => (
             <li key={comment.id}>
               <p>{comment.content}</p>
-              <small>
-                Posted by <strong>{comment.user.username}</strong> at:{" "}
-                {new Date(comment.createdAt).toLocaleString()}
-              </small>
+                <small>
+                  Posted by <strong>{comment.user.username}</strong> at:{" "}
+                  {new Date(comment.updatedAt).toLocaleString()}
+                </small>
+                {user && user.id === comment.user.id && (
+                  <div>
+                    <button onClick={() => handleEditComment(comment)}>
+                      Edit
+                    </button>
+                    {editingCommentId === comment.id && (
+                      <div>
+                        <textarea
+                          value={editingCommentContent}
+                          onChange={(e) => setEditingCommentContent(e.target.value)}
+                        />
+                        <br />
+                        <button type="submit" onClick={handleUpdateComment}>
+                          Save
+                        </button>
+                        <button type="button" onClick={() => setEditingCommentId(null)}>
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
             </li>
           ))}
         </ul>
@@ -165,7 +210,6 @@ function BlipDetail() {
         <br />
         <button type="submit">Add Comment</button>
       </form>
-
     </div>
   );
 }

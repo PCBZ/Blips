@@ -15,17 +15,10 @@ const NewBlipPage = () => {
       setError(null);
 
       const data = { content, imageUrl };
-      const response = await fetchPostWithAuth("/api/blips", data);
-
-      if (response.ok) {
-        navigate("/"); // Navigate to home on success
-      } else {
-        const responseData = await response.json();
-        setError(responseData.error || "Failed to post blip.");
-      }
+      const newBlip = await fetchPostWithAuth("/api/blips", data);
+      navigate('/');
     } catch (error) {
-      setError("An error occurred while posting the blip.");
-      console.error("Error in handlePostBlip:", error);
+      setError(error.message);
     }
   };
 
