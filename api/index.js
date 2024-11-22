@@ -265,7 +265,7 @@ app.delete("/api/blips/:id", authenticateToken, async (req, res) => {
     const deletedBlip = await prisma.blip.delete({
       where: { id: Number(id) }
     });
-    res.status(200).json(deletedBlip);
+    res.status(204).send();
   } catch (error) {
     console.error("Error deleting blip:", error);
     res.status(500).json({ error: "Failed to update the blip." });
@@ -370,6 +370,38 @@ app.put("/api/comments/:id", authenticateToken, async (req, res) => {
   } catch (error) {
     console.error("Error adding comment:", error);
     res.status(500).json({ error: "Failed to add the comment." });
+  }
+});
+
+app.delete("/api/comments/:id", authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  if (!id) {
+    return res.status(400).json({ error: "Comment ID is required." });
+  }
+
+  try {
+    const existingComment = await prisma.comment.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!existingComment) {
+      return res.status(404).json({ error: "Comment not found." });
+    }
+
+    if (existingComment.userId !== userId) {
+      return res.status(403).json({ error: "You are not allowed to delete this comment." });
+    }
+
+    await prisma.comment.delete({
+      where: { id: Number(id) },
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ error: "Failed to delete the comment." });
   }
 });
 

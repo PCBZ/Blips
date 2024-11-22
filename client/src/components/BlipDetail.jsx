@@ -112,6 +112,18 @@ function BlipDetail() {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this comment?");
+    if (isConfirmed) {
+      try {
+        await fetchDeleteWithAuth(`/api/comments/${commentId}`);
+        setComments((oldComments) => oldComments.filter((comment) => comment.id !== commentId));
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+  }
+
   if (!blip) return <p>Loading...</p>;
 
   return (
@@ -174,9 +186,8 @@ function BlipDetail() {
                 </small>
                 {user && user.id === comment.user.id && (
                   <div>
-                    <button onClick={() => handleEditComment(comment)}>
-                      Edit
-                    </button>
+                    <button onClick={() => handleEditComment(comment)}>Edit</button>
+                    <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
                     {editingCommentId === comment.id && (
                       <div>
                         <textarea
