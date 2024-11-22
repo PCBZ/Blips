@@ -73,8 +73,6 @@ app.post("/api/auth/register", async (req, res) => {
 
     // Send the token to the user
     res.status(201).json({
-      message: 'User created successfully!',
-      token,
       user: {
         id: newUser.id,
         username: newUser.username,
@@ -82,7 +80,6 @@ app.post("/api/auth/register", async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'An error occurred while creating the user.' });
   }
 });
@@ -405,7 +402,7 @@ app.delete("/api/comments/:id", authenticateToken, async (req, res) => {
   }
 });
 
-app.listen(8000, () => {
-  console.log("Server running on http://localhost:8000 🎉 🚀");
-});
+// app.listen(8000, () => {
+//   console.log("Server running on http://localhost:8000 🎉 🚀");
+// });
   
