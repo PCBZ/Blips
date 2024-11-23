@@ -104,6 +104,12 @@ export const updateBlip = async (req, res) => {
 
     const imageUrl = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : existingBlip.imageUrl;
 
+    if (req.file && existingBlip.imageUrl) {
+      const oldImagePath = path.join("uploads", path.basename(existingBlip.imageUrl));
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
+    }
     const updatedBlip = await prisma.blip.update({
       where: { id: Number(id) },
       data: { content, imageUrl },
@@ -131,6 +137,12 @@ export const deleteBlip = async (req, res) => {
     }
     if (existingBlip.userId !== userId) {
       return res.status(403).json({ error: "You are not allowed to delete this blip." });
+    }
+    if (existingBlip.imageUrl) {
+      const oldImagePath = path.join("uploads", path.basename(existingBlip.imageUrl));
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
     }
     await prisma.comment.deleteMany({
       where: { blipId: Number(id) },
