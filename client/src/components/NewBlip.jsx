@@ -4,9 +4,30 @@ import { fetchPostWithAuth } from '../security/fetchWithAuth.js';
 
 const NewBlipPage = () => {
   const [content, setContent] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize navigate
+
+  const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type (optional)
+      if (!file.type.startsWith("image/")) {
+        setError("Please select a valid image file.");
+        return;
+      }
+      setImageFile(file);
+
+      // Generate preview URL
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result); // Set the preview URL
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handlePostBlip = async (e) => {
     e.preventDefault();
@@ -14,8 +35,15 @@ const NewBlipPage = () => {
     try {
       setError(null);
 
-      const data = { content, imageUrl };
-      const newBlip = await fetchPostWithAuth("/api/blips", data);
+      const formData = new FormData();
+      formData.append("content", content);
+      if (imageFile) {
+        formData.append("image", imageFile); // Add the selected image file
+      }
+
+      // Send FormData to the server
+      const newBlip = await fetchPostWithAuth("/api/blips", formData, true);
+
       navigate('/');
     } catch (error) {
       setError(error.message);
@@ -36,14 +64,24 @@ const NewBlipPage = () => {
           />
         </div>
         <div>
-          <label htmlFor="imageUrl">Image URL (optional):</label>
+          <label htmlFor="imageFile">Select Image (optional):</label>
           <input
-            id="imageUrl"
-            type="text"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            id="imageFile"
+            type="file"
+            accept="image/*" // Restrict to image files only
+            onChange={handleImageChange}
           />
         </div>
+        {imagePreview && (
+          <div>
+            <p>Image Preview:</p>
+            <img
+              src={imagePreview}
+              alt="Selected preview"
+              style={{ width: "300px", height: "auto", border: "1px solid #ccc" }}
+            />
+          </div>
+        )}
         <button type="submit">Post Blip</button>
       </form>
 

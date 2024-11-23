@@ -12,25 +12,32 @@ export async function fetchWithAuth(endpoint, options = {}) {
   return res;
 }
   
-export async function fetchPostWithAuth(endpoint, data) {
-  const res = await fetchWithAuth(endpoint, {
-    method: "POST",
-    headers: {
+export async function fetchPostWithAuth(endpoint, data, isFormData = false) {
+  const options = { method: "POST" }
+  if (!isFormData) {
+    options.headers = {
       "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+    }
+    options.body = JSON.stringify(data);
+  } else {
+    options.body = data;
+  }
+
+  const res = await fetchWithAuth(endpoint, options);
   return res.json();
 }
 
-export async function fetchPutWithAuth(endpoint, data) {
-  const res = await fetchWithAuth(endpoint, {
-    method: "PUT",
-    headers: {
+export async function fetchPutWithAuth(endpoint, data, isFormData = false) {
+  const options = { method: "PUT" };
+  if (!isFormData) {
+    options.headers = {
       "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+    }
+    options.body = JSON.stringify(data);
+  } else {
+    options.body = data;
+  }
+  const res = await fetchWithAuth(endpoint, options);
   return res.json();
 }
 export async function fetchDeleteWithAuth(endpoint, data) {

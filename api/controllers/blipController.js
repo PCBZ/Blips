@@ -1,4 +1,12 @@
 import prisma from "../models/prismaClient.js";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+
+const uploadsDir = path.resolve("uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
 export const getBlips = async (req, res) => {
   try {
@@ -36,17 +44,41 @@ export const getBlip = async (req, res) => {
   }
 };
 
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/"); // Directory to store uploaded files
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      cb(null, uniqueSuffix + path.extname(file.originalname)); // Generate unique filename
+    },
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed!"));
+    }
+  },
+});
+
+export const uploadSingle = upload.single("image");
+
 export const createBlip = async (req, res) => {
-  const { content, imageUrl } = req.body;
+  const { content } = req.body;
   if (!content) {
     return res.status(400).json({ error: "Content cannot be empty." });
   }
 
   try {
+    const imageUrl = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : null;
+
     const newBlip = await prisma.blip.create({
       data: {
         content,
-        imageUrl: imageUrl || null,
+        imageUrl,
         userId: req.userId,
       },
     });
@@ -58,7 +90,7 @@ export const createBlip = async (req, res) => {
 
 export const updateBlip = async (req, res) => {
   const { id } = req.params;
-  const { content, imageUrl } = req.body;
+  const { content } = req.body;
   const userId = req.userId;
 
   try {
@@ -69,6 +101,8 @@ export const updateBlip = async (req, res) => {
     if (existingBlip.userId !== userId) {
       return res.status(403).json({ error: "You are not allowed to edit this blip." });
     }
+
+    const imageUrl = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : existingBlip.imageUrl;
 
     const updatedBlip = await prisma.blip.update({
       where: { id: Number(id) },
@@ -104,7 +138,7 @@ export const deleteBlip = async (req, res) => {
     await prisma.blip.delete({
       where: { id: Number(id) },
     });
-    
+
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: error.message });

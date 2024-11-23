@@ -11,6 +11,8 @@ function BlipDetail() {
   const [blip, setBlip] = useState(null);
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
   const [comments, setComments] = useState([]);
@@ -25,6 +27,7 @@ function BlipDetail() {
         setBlip(data);
         setContent(data.content);
         setImageUrl(data.imageUrl);
+        setPreviewImage(data.imageUrl);
       } catch (err) {
         setError(err.message);
       }
@@ -43,13 +46,24 @@ function BlipDetail() {
     fetchComments();
   }, [id]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const updatedBlip = await fetchPutWithAuth(`/api/blips/${id}`, {
-        content,
-        imageUrl,
-      });
+      const formData = new FormData();
+      formData.append("content", content);
+      if (selectedImage) {
+        formData.append("image", selectedImage); // Add the selected image file
+      }
+      const updatedBlip = await fetchPutWithAuth(`/api/blips/${id}`, formData, true);
       setBlip(updatedBlip);
       setIsEditing(false);
       setError("");
@@ -148,13 +162,13 @@ function BlipDetail() {
           </label>
           <br />
           <label>
-            Image URL:
-            <input
-              type="text"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-            />
+            Image:
+            <input type="file" accept="image/*" onChange={handleImageChange} />
           </label>
+          <div>
+            <p>Image Preview:</p>
+            {previewImage && <img src={previewImage} alt="Preview" style={{ height: "200px", width: "auto" }} />}
+          </div>
           <br />
           <button type="submit">Save</button>
           <button type="button" onClick={() => setIsEditing(false)}>
@@ -164,7 +178,9 @@ function BlipDetail() {
       ) : (
         <div>
           <p>{blip.content}</p>
-          {blip.imageUrl && <img src={blip.imageUrl} alt="Blip" />}
+          <div>
+            {blip.imageUrl && <img src={blip.imageUrl} alt="Blip" style={{height: "200px", width: "auto"}}/>}
+          </div>
           {user && user.id === blip.user.id && (
             <>
               <button onClick={() => setIsEditing(true)}>Edit</button>

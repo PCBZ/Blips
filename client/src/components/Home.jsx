@@ -51,15 +51,22 @@ function Home() {
       <button onClick={handleCreateNewBlip}>Create New Blip</button>
       <ul>
         {blips.map((blip) => (
-          <li key={blip.id}>
-            <p>{blip.content}</p>
-            {blip.imageUrl && <img src={blip.imageUrl} alt="Blip" />}
-            <small>
-              Posted by <strong>{blip.user.username}</strong> at: {new Date(blip.updatedAt).toLocaleString()}
-            </small>
-            <br />
-            <Link to={`/blip/${blip.id}`}>Detail</Link>
-          </li>
+          <li key={blip.id} className="blip-item">
+            <div className="blip-container">
+              {blip.imageUrl && (
+                <img src={blip.imageUrl} alt="Blip" className="blip-image" style={{height: "200px", width: "auto"}}/>
+              )}
+            <div className="blip-content">
+              <p>{blip.content}</p>
+              <small>
+                Posted by <strong>{blip.user.username}</strong> at:{" "}
+                {new Date(blip.updatedAt).toLocaleString()}
+              </small>
+              <br />
+              <Link to={`/blip/${blip.id}`}>Detail</Link>
+            </div>
+          </div>
+        </li>
         ))}
       </ul>
     </div>
