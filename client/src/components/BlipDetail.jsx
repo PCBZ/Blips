@@ -167,7 +167,7 @@ function BlipDetail() {
           </label>
           <div>
             <p>Image Preview:</p>
-            {previewImage && <img src={previewImage} alt="Preview" style={{ height: "200px", width: "auto" }} />}
+            {previewImage && <img src={previewImage} alt="Preview" style={{ width: "250px", height: "auto" }} />}
           </div>
           <br />
           <button type="submit">Save</button>
@@ -179,7 +179,7 @@ function BlipDetail() {
         <div>
           <p>{blip.content}</p>
           <div>
-            {blip.imageUrl && <img src={blip.imageUrl} alt="Blip" style={{height: "200px", width: "auto"}}/>}
+            {blip.imageUrl && <img src={blip.imageUrl} alt="Blip" style={{ width: "250px", height: "auto" }}/>}
           </div>
           {user && user.id === blip.user.id && (
             <>

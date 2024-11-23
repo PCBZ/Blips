@@ -9,6 +9,7 @@ function Home() {
   const navigate = useNavigate(); // Initialize the navigate function
   const [blips, setBlips] = useState([]);
   const [error, setError] = useState(null);
+  const [news, setNews] = useState([]);
 
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
@@ -24,7 +25,18 @@ function Home() {
         setError(err.message);
       }
     };
+    const fetchNews = async () => {
+      try {
+        const response = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=397de73ade064971aedd51131288c900'); // Replace with your API key
+        const data = await response.json();
+        setNews(data.articles);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
     fetchBlips();
+    fetchNews();
   }, []);
 
   const handleCreateNewBlip = () => {
@@ -37,6 +49,25 @@ function Home() {
 
   return (
     <div>
+      <h1>Top News</h1>
+      <div className="banner-container">
+        {news && news.map((article, index) => (
+          <div key={index} className="banner-item" onClick={() => window.open(article.url, '_blank')}>
+            {article.urlToImage && (
+              <img 
+                src={article.urlToImage} 
+                alt="Banner" 
+                className="banner-image" 
+              />
+            )}
+            <div className="banner-text">
+              <h2>{article.title}</h2>
+              <p>{article.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <h1>Blips</h1>
       {error && <p>{error}</p>}
       {user && (
@@ -54,7 +85,7 @@ function Home() {
           <li key={blip.id} className="blip-item">
             <div className="blip-container">
               {blip.imageUrl && (
-                <img src={blip.imageUrl} alt="Blip" className="blip-image" style={{height: "200px", width: "auto"}}/>
+                <img src={blip.imageUrl} alt="Blip" className="blip-image" style={{width: "250px", height: "auto"}}/>
               )}
             <div className="blip-content">
               <p>{blip.content}</p>

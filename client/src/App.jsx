@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import NewBlip from './components/NewBlip';
 import BlipDetail from "./components/BlipDetail";
+import './App.css';
 
 function App() {
   return (
