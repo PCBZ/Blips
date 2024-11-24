@@ -11,6 +11,11 @@ export async function fetchWithAuth(endpoint, options = {}) {
   }
   return res;
 }
+
+export async function fetchGetWithAuth(endpoint) {
+  const res = await fetchWithAuth(endpoint);
+  return res.json();
+}
   
 export async function fetchPostWithAuth(endpoint, data, isFormData = false) {
   const options = { method: "POST" }

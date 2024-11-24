@@ -13,3 +13,12 @@ export const authenticateToken = (req, res, next) => {
     return res.status(403).json({ error: error.message });
   }
 };
+
+export const conditionalMiddleware = (middleware) => {
+  return (req, res, next) => {
+    if (req.query.userId) {
+      return middleware(req, res, next);
+    }
+    next();
+  };
+};

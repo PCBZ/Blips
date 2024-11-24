@@ -47,6 +47,10 @@ function Home() {
     }
   }
 
+  const handleNavigateToLogin = () => {
+    navigate('/login');
+  }
+
   return (
     <div>
       <h1>Top News</h1>
@@ -73,11 +77,13 @@ function Home() {
       {user && (
         <div>
           <p>Hello, {user.username}!</p>
-          <button onClick={handleLogout}>Logout</button> {/* Logout button */}
         </div>
       )}
       {!user && (
-        <p>Please log in to view and create Blips.</p> // Message if the user is not logged in
+        <div>
+          <p>Please log in to view and create Blips.</p>
+          <button onClick={handleNavigateToLogin}>Login</button>
+        </div>
       )}
       <button onClick={handleCreateNewBlip}>Create New Blip</button>
       <ul>

@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import NewBlip from './components/NewBlip';
 import BlipDetail from "./components/BlipDetail";
+import Profile from './components/Profile';
 import './App.css';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
     <div className="App">
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/login">Login</Link>
+        <Link to="/profile">Profile</Link>
       </nav>
       
       <Routes>
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/new-blip" element={<NewBlip />} />
         <Route path="/blip/:id" element={<BlipDetail />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );

@@ -9,8 +9,10 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 export const getBlips = async (req, res) => {
+  const { userId } = req.query;
   try {
     const blips = await prisma.blip.findMany({
+      where: userId ? { userId: Number(userId) } : {},
       orderBy: { updatedAt: "desc" },
       include: {
         user: {

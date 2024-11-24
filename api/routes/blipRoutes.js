@@ -1,10 +1,10 @@
 import express from 'express';
 import { getBlips, createBlip, getBlip, updateBlip, deleteBlip, uploadSingle } from '../controllers/blipController.js';
-import { authenticateToken } from '../middlewares/authMiddlewares.js';
+import { authenticateToken, conditionalMiddleware } from '../middlewares/authMiddlewares.js';
 
 const router = express.Router();
 
-router.get('/', getBlips);
+router.get('/', conditionalMiddleware(authenticateToken), getBlips);
 router.get('/:id', getBlip);
 router.post('/', authenticateToken, uploadSingle, createBlip);
 router.put('/:id', authenticateToken, uploadSingle, updateBlip);
