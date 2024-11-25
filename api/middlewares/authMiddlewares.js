@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import multer from "multer";
 import path from "path";
 
-export const authenticateToken = (req, res, next) => {
+export const requireAuth = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({ error: "Access denied. No token provided." });
