@@ -8,8 +8,8 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Keep track of the logged-in user
   const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authInitialized, setAuthInitialized] = useState(false);
 
   // Run on app initialization to check login status
   useEffect(() => {
@@ -20,12 +20,9 @@ export const AuthProvider = ({ children }) => {
           method: 'GET',
           credentials: 'include', // Include cookies for authentication
         });
-
-        console.log(response);
         if (response.ok) {
           const user = await response.json();
           setUser(user); // Restore user data to the state
-          console.log(user);
           setIsAuthenticated(true);
         } else {
           setUser(null);
@@ -36,7 +33,8 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setIsAuthenticated(false);
       } finally {
-        setLoading(false); // End the loading state
+        setLoading(false);
+        setAuthInitialized(true);
       }
     };
     checkAuthStatus();
@@ -99,7 +97,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, register, login, logout, isAuthenticated, loading, authInitialized}}>
       {children}
     </AuthContext.Provider>
   );

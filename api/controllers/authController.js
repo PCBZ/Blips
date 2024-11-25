@@ -60,6 +60,7 @@ export const login = async (req, res) => {
       id: user.id,
       email: user.email,
       username: user.username,
+      avatarUrl: user.avatarUrl,
     };
     res.status(200).json(userData);
   } catch (error) {
@@ -81,8 +82,25 @@ export const getUserInfo = async (req, res) => {
     select: { 
       id: true, 
       email: true, 
-      username: true 
+      username: true,
+      avatarUrl: true,
     },
   });
   res.json(user);
+};
+
+export const uploadAvatar = async (req, res) => {
+  const userId = req.userId;
+  const avatarUrl = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : null;
+
+  try {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { avatarUrl },
+      select: { id: true, email: true, username: true, avatarUrl: true },
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };

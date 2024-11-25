@@ -1,5 +1,4 @@
 import prisma from "../models/prismaClient.js";
-import multer from "multer";
 import path from "path";
 import fs from "fs";
 
@@ -45,28 +44,6 @@ export const getBlip = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads/"); // Directory to store uploaded files
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      cb(null, uniqueSuffix + path.extname(file.originalname)); // Generate unique filename
-    },
-  }),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Only image files are allowed!"));
-    }
-  },
-});
-
-export const uploadSingle = upload.single("image");
 
 export const createBlip = async (req, res) => {
   const { content } = req.body;
