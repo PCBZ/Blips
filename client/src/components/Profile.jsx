@@ -3,6 +3,7 @@ import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { fetchGetWithAuth, fetchPutWithAuth } from '../security/fetchWithAuth';
 import defaultAvatar from '../assets/images/default_avatar.jpg';
+import { Link } from 'react-router-dom';
 
 function Profile() {
   const { user, logout, authInitialized } = useAuth();
@@ -128,10 +129,8 @@ function Profile() {
               )}
               <div className="blip-content">
                 <p>{blip.content}</p>
-                <small>
-                  Posted by <strong>{blip.user.username}</strong> at:{' '}
-                  {new Date(blip.updatedAt).toLocaleString()}
-                </small>
+                <br />
+                <Link to={`/blip/${blip.id}`}>Detail</Link>
               </div>
             </div>
           </li>

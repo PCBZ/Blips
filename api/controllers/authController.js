@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../models/prismaClient.js";
+import fs from "fs";
+import path from "path";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -94,6 +96,16 @@ export const uploadAvatar = async (req, res) => {
   const avatarUrl = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : null;
 
   try {
+    const existedUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!existedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const oldImagePath = path.join("uploads", path.basename(existedUser.avatarUrl));
+    if (fs.existsSync(oldImagePath)) {
+      fs.unlinkSync(oldImagePath);
+    }
+
     const user = await prisma.user.update({
       where: { id: userId },
       data: { avatarUrl },
