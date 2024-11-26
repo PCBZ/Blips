@@ -88,12 +88,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    setIsAuthenticated(false);
-    setUser(null);
+    try {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      setIsAuthenticated(false);
+      setUser(null);
+    } catch (error) {
+      throw new Error('Logout failed. Please try again.');
+    }
   };
 
   return (

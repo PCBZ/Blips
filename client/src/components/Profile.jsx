@@ -32,9 +32,13 @@ function Profile() {
     }
   }, [authInitialized, user]);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleAvatarClick = () => {
@@ -106,10 +110,10 @@ function Profile() {
       ) : (
         <p>Redirecting to login...</p>
       )}
+      {error && <p>{error}</p>}
 
       {/* Display user blips */}
       <h2>Your Blips</h2>
-      {error && <p>{error}</p>}
       <ul>
         {blips.map((blip) => (
           <li key={blip.id} className="blip-item">
