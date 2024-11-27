@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../security/AuthContext';
-import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate for routing
+import { useNavigate } from 'react-router-dom'; // Import Link and useNavigate for routing
 
 function Register() {
   const { register, error, loading } = useAuth(); // Use register function from context
