@@ -1,0 +1,51 @@
+/* Horizontal Banner Container */
+.banner-container {
+  display: flex;
+  overflow-x: scroll; /* Enable horizontal scrolling */
+  margin-bottom: 20px;
+  padding: 10px 0;
+  gap: 15px; /* Space between each banner */
+  scroll-snap-type: x mandatory; /* Optional: makes each banner snap into view */
+}
+
+.banner-item {
+  display: flex;
+  flex-direction: column;
+  width: 250px; /* Set a fixed width for each banner */
+  height: auto;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevent shrinking */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.banner-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.banner-text {
+  padding: 10px;
+  background-color: #fff;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: #333;
+}
+
+.banner-text h2 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.banner-text p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Optional: Add smooth scrolling for banner container */
+.banner-container {
+  scroll-behavior: smooth;
+}
