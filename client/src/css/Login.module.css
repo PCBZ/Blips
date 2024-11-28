@@ -130,6 +130,10 @@ body {
   }
   
   @media (max-width: 600px) {
+    .form_wrapper {
+      width: 90%;
+    }
+
     .form_wrapper .col_half {
       width: 100%;
       float: none;

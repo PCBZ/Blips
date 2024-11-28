@@ -1,0 +1,59 @@
+.banner-container {
+    display: flex;
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    gap: 15px; /* Space between each banner */
+    scroll-snap-type: x mandatory; /* Optional: makes each banner snap into view */
+  }
+  
+  .banner-item {
+    display: flex;
+    flex-direction: column;
+    width: 300px; /* Set a fixed width for each banner */
+    height: 250px; /* Fixed height for consistency */
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent shrinking */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensures content doesn't spill out */
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: 150px; /* Fixed height for the image */
+    object-fit: cover; /* Maintain aspect ratio while covering the container */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .banner-text {
+    padding: 10px;
+    background-color: #fff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: #333;
+    height: 100px; /* Ensures text content doesn't alter overall height */
+    overflow: hidden; /* Prevents text from overflowing */
+    text-overflow: ellipsis; /* Adds ellipsis for overflowing text */
+    display: -webkit-box; /* For multi-line truncation */
+    -webkit-line-clamp: 3; /* Limits to 3 lines of text */
+    -webkit-box-orient: vertical;
+  }
+  
+  .banner-text h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  @media (max-width: 600px) {
+    .banner-container {
+      padding: 0 10px; /* Add padding for better spacing */
+    }
+  
+    .banner-item {
+      width: 90%; /* Set each banner to 90% of the width */
+      margin-left: 5%; /* Add margin to center the banner */
+      scroll-snap-align: center;
+    }
+  }

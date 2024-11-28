@@ -3,18 +3,15 @@ import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { fetchGet } from '../network/fetcher';
+import '../css/Home.css';
+import '../css/Banner.css';
 
 function Home() {
-  const { user, logout, isAuthenticated } = useAuth(); // Get the user, logout function, and getBlips function from AuthContext
+  const { user, isAuthenticated } = useAuth(); // Get the user, logout function, and getBlips function from AuthContext
   const navigate = useNavigate(); // Initialize the navigate function
   const [blips, setBlips] = useState([]);
   const [error, setError] = useState(null);
   const [news, setNews] = useState([]);
-
-  const handleLogout = () => {
-    logout(); // Call the logout function from AuthContext
-    navigate('/login'); // Redirect to the Login page after logging out
-  };
 
   useEffect(() => {
     const fetchBlips = async () => {
@@ -55,7 +52,7 @@ function Home() {
 
   return (
     <div>
-      <h1>Top News</h1>
+      <h1 className='home-page-h1'>Top News</h1>
       <div className="banner-container">
         {news && news.map((article, index) => (
           <div key={index} className="banner-item" onClick={() => window.open(article.url, '_blank')}>
@@ -68,46 +65,44 @@ function Home() {
             )}
             <div className="banner-text">
               <h2>{article.title}</h2>
-              <p>{article.description}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <h1>Blips</h1>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      {user && (
-        <div>
-          <p>Hello, {user.username}!</p>
-        </div>
-      )}
-      {!user && (
-        <div>
-          <p>Please log in to view and create Blips.</p>
-          <button onClick={handleNavigateToLogin}>Login</button>
-        </div>
-      )}
-      <button onClick={handleCreateNewBlip}>Create New Blip</button>
-      <ul>
-        {blips.map((blip) => (
-          <li key={blip.id} className="blip-item">
-            <div className="blip-container">
-              {blip.imageUrl && (
-                <img src={blip.imageUrl} alt="Blip" className="blip-image" style={{width: "250px", height: "auto"}}/>
-              )}
-            <div className="blip-content">
-              <p>{blip.content}</p>
-              <small>
-                Posted by <strong>{blip.user.username}</strong> at:{" "}
-                {new Date(blip.updatedAt).toLocaleString()}
-              </small>
-              <br />
-              <Link to={`/blip/${blip.id}`}>Detail</Link>
+      <h1 className='home-page-h1'>Blips</h1>
+      <div className='home-page-blip-list-container'>
+        <div className='home-page-blip-header'>
+          {error && <p style={{color: 'red'}}>{error}</p>}
+          {user && (
+            <div>
+              <p>Hello, {user.username}!</p>
             </div>
-          </div>
-        </li>
-        ))}
-      </ul>
+          )}
+          {!user && (
+            <button className='home-page-button' onClick={handleNavigateToLogin}>Login</button>
+          )}
+          {user && (
+            <button className='home-page-button' onClick={handleCreateNewBlip}>Create New Blip</button>
+          )}
+        </div>
+        <ul className="home-page-list">
+          {blips.map((blip) => (
+            <li key={blip.id} className="blip-item" onClick={ () => navigate(`/blip/${blip.id}`) }>
+              <label>
+                <strong>{blip.user.username}</strong> at:{" "}
+                {new Date(blip.updatedAt).toLocaleString()}
+              </label>
+              <div className="blip-container">
+                {blip.imageUrl && (
+                  <img src={blip.imageUrl} alt="Blip" className="blip-image"/>
+                )}
+                <p>{blip.content}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
