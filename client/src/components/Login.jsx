@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../security/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import '../css/login.css';
+import styles from '../css/Login.module.css';
 
 function Login() {
   const { login } = useAuth();
@@ -21,17 +21,17 @@ function Login() {
   };
 
   return (
-    <div className="form_wrapper">
-      <div className="title_container">
+    <div className={styles.form_wrapper}>
+      <div className={styles.title_container}>
         <h2>Login</h2>
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if any */}
-      <form onSubmit={handleLogin} className="form_container">
-        <div className="row">
-          <div className="col_half">
+      {error && <p className={styles.error_message}>{error}</p>} {/* Display error if any */}
+      <form onSubmit={handleLogin} className={styles.form_container}>
+        <div className={styles.row}>
+          <div className={styles.col_half}>
             <label>
               Email:
-              <div className="input_field">
+              <div className={styles.input_field}>
                 <input
                   type="email"
                   value={email}
@@ -42,10 +42,10 @@ function Login() {
               </div>
             </label>
           </div>
-          <div className="col_half">
+          <div className={styles.col_half}>
             <label>
               Password:
-              <div className="input_field">
+              <div className={styles.input_field}>
                 <input
                   type="password"
                   value={password}
@@ -57,12 +57,14 @@ function Login() {
             </label>
           </div>
         </div>
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login" className={styles.submit_button} />
       </form>
-      <div className="create_account">
+      <div className={styles.create_account}>
         <p>
           Don't have an account?{' '}
-          <Link to="/register">Register here</Link>
+          <Link to="/register" className={styles.register_link}>
+            Register here
+          </Link>
         </p>
       </div>
     </div>

@@ -1,78 +1,81 @@
 import React, { useState } from 'react';
 import { useAuth } from '../security/AuthContext';
-import { useNavigate } from 'react-router-dom'; // Import Link and useNavigate for routing
+import { useNavigate } from 'react-router-dom';
+import styles from '../css/Register.module.css';
 
 function Register() {
-  const { register, error, loading } = useAuth(); // Use register function from context
-  const navigate = useNavigate(); // For navigating after successful registration
+  const { register, loading } = useAuth();
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Basic password confirmation check
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-    await register(username, email, password);
-    if (!error) {
+    try {
+      await register(username, email, password);
       navigate('/');
+    } catch (error) {
+      setError(error.message);
     }
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error if any */}
-      <form onSubmit={handleRegister}>
-        <label>
-          Username:
-          <input 
-            type="text" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
+    <div className={styles.form_wrapper}>
+      <div className={styles.title_container}>
+        <h2>Register</h2>
+      </div>
+      {error && <p className={styles.error_message}>{error}</p>}
+      <form onSubmit={handleRegister} className={styles.form_container}>
+        <div className={styles.input_field}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
+        </div>
+        <div className={styles.input_field}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
+        </div>
+        <div className={styles.input_field}>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <br />
-        <label>
-          Confirm Password:
-          <input 
-            type="password" 
-            value={confirmPassword} 
-            onChange={(e) => setConfirmPassword(e.target.value)} 
+        </div>
+        <div className={styles.input_field}>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
-        <br />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Registering...' : 'Register'}
-        </button>
+        </div>
+        <input
+          type="submit"
+          value={loading ? 'Registering...' : 'Register'}
+          disabled={loading}
+        />
       </form>
     </div>
   );
