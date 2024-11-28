@@ -1,0 +1,106 @@
+/* Ensure the body takes up the full viewport */
+.newBlipWrapper {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+    background: #f2f2f2;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Main container for the new blip form */
+  .newBlipContainer {
+    background: #fff;
+    width: 550px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 25px;
+    border-top: 5px solid #f5ba1a;  /* Theme color */
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  
+  /* Header styles */
+  .newBlipContainer h1 {
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Error message styling */
+  .error_message {
+    color: red;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+  }
+  
+  /* Form styling */
+  .newBlipContainer form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Input fields */
+  input[type="text"],
+  .textarea {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+    min-height: 100px;
+    field-sizing: content;
+  }
+  
+  input[type="file"] {
+    margin-top: 10px;
+  }
+  
+  /* Focused input styling */
+  input[type="text"]:focus,
+  textarea:focus {
+    border: 1px solid #f5ba1a;  /* Theme color */
+    box-shadow: 0 0 5px rgba(255, 169, 0, 0.5);
+  }
+
+  /* Ensures the preview image matches the width of the textarea */
+  .imagePreview {
+    width: 100%;
+    height: auto; /* Maintains the aspect ratio */
+    max-width: 100%;
+    display: block;
+    border: 1px solid #ccc;
+  }
+  
+  /* Submit button styling */
+  .submitBtn {
+    background: #f5ba1a;  /* Theme color */
+    color: #fff;
+    font-size: 1.1em;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+  }
+  
+  .submitBtn:hover,
+  .submitBtn:focus {
+    background: #e1a70a;  /* Darker shade of theme color */
+  }
+  
+  /* Media query for smaller screens */
+  @media (max-width: 600px) {
+    .newBlipContainer {
+        width: 90%;
+        margin: 10% auto;
+    }
+    
+    form {
+        flex-direction: column;
+    }
+  }

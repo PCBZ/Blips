@@ -28,6 +28,7 @@ body {
 .error_message {
   color: red;
   font-size: 0.9em;
+
   margin-bottom: 15px;
 }
 

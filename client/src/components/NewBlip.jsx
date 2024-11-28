@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchPostWithAuth } from '../security/fetchWithAuth.js';
+import { fetchPostWithAuth } from "../security/fetchWithAuth.js";
+import styles from "../css/NewBlip.module.css";
 
 const NewBlipPage = () => {
   const [content, setContent] = useState("");
@@ -13,17 +14,14 @@ const NewBlipPage = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate file type (optional)
       if (!file.type.startsWith("image/")) {
         setError("Please select a valid image file.");
         return;
       }
       setImageFile(file);
-
-      // Generate preview URL
       const reader = new FileReader();
       reader.onload = () => {
-        setImagePreview(reader.result); // Set the preview URL
+        setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -38,54 +36,57 @@ const NewBlipPage = () => {
       const formData = new FormData();
       formData.append("content", content);
       if (imageFile) {
-        formData.append("image", imageFile); // Add the selected image file
+        formData.append("image", imageFile);
       }
 
-      // Send FormData to the server
-      const newBlip = await fetchPostWithAuth("/api/blips", formData, true);
+      await fetchPostWithAuth("/api/blips", formData, true);
 
-      navigate('/');
+      navigate("/");
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
-    <div>
-      <h1>New Blip</h1>
-      <form onSubmit={handlePostBlip}>
-        <div>
-          <label htmlFor="content">Content:</label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="imageFile">Select Image (optional):</label>
-          <input
-            id="imageFile"
-            type="file"
-            accept="image/*" // Restrict to image files only
-            onChange={handleImageChange}
-          />
-        </div>
-        {imagePreview && (
-          <div>
-            <p>Image Preview:</p>
-            <img
-              src={imagePreview}
-              alt="Selected preview"
-              style={{ width: "300px", height: "auto", border: "1px solid #ccc" }}
+    <div className={styles.newBlipWrapper}>
+      <div className={styles.newBlipContainer}>
+        <h1 className={styles.title}>New Blip</h1>
+        <form onSubmit={handlePostBlip}>
+          <div className={styles.formGroup}>
+            <textarea
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+              placeholder="Write your blip here..."
+              className={styles.textarea}
             />
           </div>
-        )}
-        <button type="submit">Post Blip</button>
-      </form>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          {imagePreview && (
+            <div>
+              <img
+                src={imagePreview}
+                alt="Selected preview"
+                className={styles.imagePreview}
+              />
+            </div>
+          )}
+          <div className={styles.formGroup}>
+            <label htmlFor="imageFile" className={styles.label}>
+              Select Image (optional):
+            </label>
+            <input
+              id="imageFile"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className={styles.inputFile}
+            />
+          </div>
+          <button type="submit" className={styles.submitBtn}>Post Blip</button>
+        </form>
+        {error && <p className={styles.errorMessage}>{error}</p>}
+      </div>
     </div>
   );
 };
