@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { fetchGet } from '../network/fetcher';
 import '../css/Home.css';
 import '../css/Banner.css';
