@@ -34,14 +34,14 @@
   padding: 5px 10px;
   font-size: 14px;
   border: none;
-  background-color: #f5ba1a;
+  background-color: #0056b3;
   color: white;
   cursor: pointer;
   border-radius: 3px;
 }
 
 .comment-actions button:hover {
-  background-color: #e1a70a;
+  background-color: #003f7f;
 }
 
 /* Editing Comment */
@@ -60,8 +60,8 @@
 }
 
 .comment-edit textarea:focus {
-  border: 1px solid #f5ba1a;
-  box-shadow: 0 0 5px rgba(255, 169, 0, 0.5);
+  border: 1px solid #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .buttons-container {
@@ -92,8 +92,8 @@
 }
 
 .new-comment-textarea:focus {
-  border: 1px solid #f5ba1a;
-  box-shadow: 0 0 5px rgba(255, 169, 0, 0.5);
+  border: 1px solid #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .add-comment-button {
@@ -101,12 +101,12 @@
   padding: 10px 15px;
   font-size: 14px;
   color: white;
-  background-color: #f5ba1a;
+  background-color: #0056b3;
   border: none;
   border-radius: 3px;
   cursor: pointer;
 }
 
 .add-comment-button:hover {
-  background-color: #e1a70a;
+  background-color: #003f7f;
 }

@@ -7,3 +7,28 @@ body {
   font-family: Verdana, Geneva, sans-serif;
   background: #f2f2f2;
 }
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  background-color: #0056b3;
+  padding: 10px 20px;
+}
+
+.nav-container {
+  width: 600px;
+  display: flex;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 0;
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+}

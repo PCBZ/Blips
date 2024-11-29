@@ -5,7 +5,7 @@
   box-sizing: border-box;
   padding: 25px;
   margin: 10% auto;
-  border-top: 5px solid #f5ba1a;
+  border-top: 5px solid #0056b3;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -46,12 +46,12 @@
 .form_wrapper input[type="username"]:focus,
 .form_wrapper input[type="email"]:focus,
 .form_wrapper input[type="password"]:focus {
-  box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  border: 1px solid #f5ba1a;
+  box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  border: 1px solid #0056b3;
 }
 
 input[type="submit"] {
-  background: #f5ba1a;
+  background: #0056b3;
   height: 40px;
   line-height: 40px;
   width: 100%;
@@ -64,7 +64,7 @@ input[type="submit"] {
 
 input[type="submit"]:hover,
 input[type="submit"]:focus {
-  background: #e1a70a;
+  background: #003f7f;
 }
 
 /* Media query for smaller screens */

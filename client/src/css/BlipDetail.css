@@ -28,7 +28,7 @@
 }
 
 .detail-blip-button {
-  background-color: #f5ba1a;
+  background-color: #0056b3;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -40,7 +40,7 @@
 }
 
 .detail-blip-button:hover {
-  background-color: #e1a70a;
+  background-color: #003f7f;
 }
 
 .detail-edit-container {

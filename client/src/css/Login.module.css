@@ -11,7 +11,7 @@
   margin: 10% auto 0;
   position: relative;
   z-index: 1;
-  border-top: 5px solid #f5ba1a;
+  border-top: 5px solid #0056b3;
   -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
@@ -56,10 +56,10 @@
   outline: none;
 }
 .form_wrapper input[type=text]:focus {
-  -webkit-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  -moz-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  border: 1px solid #f5ba1a;
+  -webkit-box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  -moz-box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  border: 1px solid #0056b3;
 }
 .form_wrapper input[type=email] {
   width: 100%;
@@ -70,10 +70,10 @@
   outline: none;
 }
 .form_wrapper input[type=email]:focus {
-  -webkit-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  -moz-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  border: 1px solid #f5ba1a;
+  -webkit-box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  -moz-box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  border: 1px solid #0056b3;
 }
 .form_wrapper input[type=password] {
   width: 100%;
@@ -84,13 +84,13 @@
   outline: none;
 }
 .form_wrapper input[type=password]:focus {
-  -webkit-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  -moz-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
-  border: 1px solid #f5ba1a;
+  -webkit-box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  -moz-box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 2px 1px rgba(0, 123, 255, 0.5);
+  border: 1px solid #0056b3;
 }
 .form_wrapper input[type=submit] {
-  background: #f5ba1a;
+  background: #0056b3;
   height: 35px;
   line-height: 35px;
   width: 100%;
@@ -102,10 +102,10 @@
   margin-bottom: 10px;
 }
 .form_wrapper input[type=submit]:hover {
-  background: #e1a70a;
+  background: #003f7f;
 }
 .form_wrapper input[type=submit]:focus {
-  background: #e1a70a;
+  background: #003f7f;
 }
 .form_wrapper input[type=checkbox] {
   margin-right: 2px;
@@ -116,7 +116,7 @@
 }
 
 .create_account a {
-  color: #e1a70a;
+  color: #003f7f;
   text-decoration: none;
   font-weight: bold;
 }

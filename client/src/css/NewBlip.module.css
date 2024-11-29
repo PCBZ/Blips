@@ -14,7 +14,7 @@
     max-width: 100%;
     box-sizing: border-box;
     padding: 25px;
-    border-top: 5px solid #f5ba1a;  /* Theme color */
+    border-top: 5px solid #0056b3;  /* Theme color */
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
     text-align: left;
     font-size: 14px;
@@ -61,8 +61,8 @@
   /* Focused input styling */
   input[type="text"]:focus,
   textarea:focus {
-    border: 1px solid #f5ba1a;  /* Theme color */
-    box-shadow: 0 0 5px rgba(255, 169, 0, 0.5);
+    border: 1px solid #0056b3;  /* Theme color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
 
   /* Ensures the preview image matches the width of the textarea */
@@ -76,7 +76,7 @@
   
   /* Submit button styling */
   .submitBtn {
-    background: #f5ba1a;  /* Theme color */
+    background: #0056b3;  /* Theme color */
     color: #fff;
     font-size: 1.1em;
     padding: 10px;
@@ -88,7 +88,7 @@
   
   .submitBtn:hover,
   .submitBtn:focus {
-    background: #e1a70a;  /* Darker shade of theme color */
+    background: #003f7f;  /* Darker shade of theme color */
   }
   
   /* Media query for smaller screens */

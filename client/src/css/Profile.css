@@ -74,7 +74,7 @@
 }
 
 .profile-button {
-  background-color: #f5ba1a;
+  background-color: #0056b3;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -89,18 +89,18 @@
   padding: 5px 10px;
   font-size: 14px;
   border: none;
-  background-color: #f5ba1a;
+  background-color: #0056b3;
   color: white;
   cursor: pointer;
   border-radius: 3px;
 }
 
 .profile-button:hover {
-  background-color: #e1a70a;
+  background-color: #003f7f;
 }
 
 .profile-edit-button:hover {
-  background-color: #e1a70a;
+  background-color: #003f7f;
 }
 
 @media (max-width: 600px) {
