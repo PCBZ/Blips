@@ -93,3 +93,18 @@
   min-height: 100px;
   field-sizing: content;
 }
+
+@media (max-width: 600px) {
+  .blip-detail-wrapper-parent {
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 100%;
+    display: block;
+    overflow-x: hidden;
+  }
+  
+  .blip-detail-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

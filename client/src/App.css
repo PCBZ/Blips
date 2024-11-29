@@ -2,3 +2,8 @@
   color: red;
   font-size: 0.9em;
 }
+
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  background: #f2f2f2;
+}

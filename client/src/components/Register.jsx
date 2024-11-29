@@ -35,16 +35,16 @@ function Register() {
       </div>
       {error && <p className={styles.error_message}>{error}</p>}
       <form onSubmit={handleRegister} className={styles.form_container}>
-        <div className={styles.input_field}>
+        <div className={styles.register_input_field}>
           <input
-            type="text"
+            type="username"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
-        <div className={styles.input_field}>
+        <div className={styles.register_input_field}>
           <input
             type="email"
             placeholder="Email"
@@ -53,7 +53,7 @@ function Register() {
             required
           />
         </div>
-        <div className={styles.input_field}>
+        <div className={styles.register_input_field}>
           <input
             type="password"
             placeholder="Password"
@@ -62,7 +62,7 @@ function Register() {
             required
           />
         </div>
-        <div className={styles.input_field}>
+        <div className={styles.register_input_field}>
           <input
             type="password"
             placeholder="Confirm Password"

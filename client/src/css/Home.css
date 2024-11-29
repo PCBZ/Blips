@@ -118,15 +118,13 @@
   .home-page-blip-list-container {
     padding: 10px;
     margin: 0 auto;
-    max-width: 100%; /* Ensure the container doesn't overflow horizontally */
+    max-width: 100%;
     display: block;
     overflow-x: hidden;
   }
 
-  /* Make each item take up 70% of the available width */
   .blip-item {
     width: 90%;
-    /* box-sizing: border-box;  */
     margin-left: auto;
     margin-right: auto;
   }
