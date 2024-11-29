@@ -3,7 +3,6 @@
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  padding: 20px;
 }
 
 .profile-container {
@@ -102,4 +101,12 @@
 
 .profile-edit-button:hover {
   background-color: #e1a70a;
+}
+
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 100%;
+  }
 }
