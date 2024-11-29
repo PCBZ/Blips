@@ -5,6 +5,7 @@
     background: #f2f2f2;
     display: flex;
     justify-content: center;
+    margin: 10% auto;
   }
   
   /* Main container for the new blip form */
