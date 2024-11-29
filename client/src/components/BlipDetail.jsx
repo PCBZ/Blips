@@ -5,6 +5,8 @@ import { useAuth } from "../security/AuthContext";
 import { fetchGet } from "../network/fetcher";
 import "../css/BlipDetail.css";
 import "../css/Comment.css";
+import "../css/Blip.css";
+import { DEFAULT_AVATAR } from "../config/constants";
 
 function BlipDetail() {
   const { id } = useParams();
@@ -53,7 +55,6 @@ function BlipDetail() {
       setPreviewImage(URL.createObjectURL(file));
     }
   };
-
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -168,17 +169,22 @@ function BlipDetail() {
                     </div>
                   </form>
                 ) : (
-                  <div class='detail-blip-box'>
-                    <label>
-                      <strong>{blip.user.username}</strong> at:{" "}
-                      {new Date(blip.updatedAt).toLocaleString()}
-                    </label>
-                    <div className="detail-blip-container">
-                      {blip.imageUrl && (
-                      <img src={blip.imageUrl} alt="Blip" className="detail-blip-image"/>
-                      )}
-                      <p className="detail-blip-content">{blip.content}</p>
+                  <div class='blip-container'>
+                    <div className="blip-header">
+                      <img 
+                        src={blip.user.avatarUrl || DEFAULT_AVATAR} 
+                        alt={`${blip.user.username}'s avatar`} 
+                      className="blip-avatar" 
+                      />
+                      <label>
+                        <strong>{blip.user.username}</strong> at:{" "}
+                        {new Date(blip.updatedAt).toLocaleString()}
+                      </label>
                     </div>
+                    {blip.imageUrl && (
+                      <img src={blip.imageUrl} alt="Blip" className="blip-image"/>
+                    )}
+                    <label>{blip.content}</label>
                     {user && user.id === blip.user.id && (
                       <div className="detail-edit-button-container">
                         <button className="detail-blip-button" onClick={() => setIsEditing(true)}>edit</button>

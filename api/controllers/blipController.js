@@ -15,7 +15,7 @@ export const getBlips = async (req, res) => {
       orderBy: { updatedAt: "desc" },
       include: {
         user: {
-          select: { id: true, username: true },
+          select: { id: true, username: true, avatarUrl: true },
         },
       },
     });
@@ -31,7 +31,7 @@ export const getBlip = async (req, res) => {
       where: { id: Number(req.params.id) },
       include: {
         user: {
-          select: { id: true, username: true },
+          select: { id: true, username: true, avatarUrl: true },
         },
       },
     });

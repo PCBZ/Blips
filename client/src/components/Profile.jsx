@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { fetchGetWithAuth, fetchPutWithAuth } from '../security/fetchWithAuth';
-import defaultAvatar from '../assets/images/default_avatar.jpg';
-import { Link } from 'react-router-dom';
+import { DEFAULT_AVATAR } from '../config/constants';
+import '../css/Profile.css';
+import '../css/Blip.css';
 
 function Profile() {
   const { user, logout, authInitialized } = useAuth();
@@ -78,64 +79,60 @@ function Profile() {
   };
 
   return (
-    <div>
-      <h1>Profile</h1>
-      {user ? (
-        <div>
-          <div onClick={handleAvatarClick} style={{ cursor: 'pointer' }}>
-            <img
-              src={previewAvatar || user.avatarUrl || defaultAvatar}
-              alt="Avatar"
-              style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-            />
-          </div>
-          {showUpload && (
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-              {previewAvatar && (
-                <div>
-                  <button onClick={handleSave}>Save</button>
-                  <button onClick={handleCancel}>Cancel</button>
+    <div className="profile-wrapper">
+      <div className='profile-container'>
+        <h1 className="profile-header-h1">Profile</h1>
+        <div className='profile-header'>
+          {user ? (
+            <div className='profile-header-card'>
+              <div className="profile-avatar-container">
+                <div onClick={handleAvatarClick} style={{ cursor: 'pointer' }}>
+                  <img
+                    src={previewAvatar || user.avatarUrl || DEFAULT_AVATAR}
+                    alt="Avatar"
+                    className='profile-avatar'
+                  />
                 </div>
-              )}
-            </div>
-          )}
-          <p><strong>Name:</strong> {user.username}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <p>Redirecting to login...</p>
-      )}
-      {error && <p>{error}</p>}
-
-      {/* Display user blips */}
-      <h2>Your Blips</h2>
-      <ul>
-        {blips.map((blip) => (
-          <li key={blip.id} className="blip-item">
-            <div className="blip-container">
-              {blip.imageUrl && (
-                <img
-                  src={blip.imageUrl}
-                  alt="Blip"
-                  className="blip-image"
-                  style={{ height: '200px', width: 'auto' }}
-                />
-              )}
-              <div className="blip-content">
-                <p>{blip.content}</p>
-                <br />
-                <Link to={`/blip/${blip.id}`}>Detail</Link>
+                {showUpload && (
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                )}
+                {previewAvatar && (
+                  <div className='profile-button-container'>
+                    <button className='profile-edit-button' onClick={handleSave}>Save</button>
+                    <button className='profile-edit-button' onClick={handleCancel}>Cancel</button>
+                  </div>
+                )}
+              </div>
+              <div className='profile-info-container'>
+                <label><strong>Name:</strong> {user.username}</label>
+                <label><strong>Email:</strong> {user.email}</label>
+                <button className='profile-button' onClick={handleLogout}>Logout</button>
               </div>
             </div>
-          </li>
-        ))}
-      </ul>
+          ) : (
+            <p>Redirecting to login...</p>
+          )}
+        </div>
+        {error && <p>{error}</p>}
+
+        <h2>Your Blips</h2>
+        <ul className='blip-list'>
+          {blips.map((blip) => (
+            <li key={blip.id} className="blip-item" onClick={ () => navigate(`/blip/${blip.id}`) }>
+              <div className="blip-container">
+                {blip.imageUrl && (
+                  <img src={blip.imageUrl} alt="Blip" />
+                )}
+                <label>{blip.content}</label>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

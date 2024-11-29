@@ -1,0 +1,1 @@
+export const DEFAULT_AVATAR = '../assets/images/default_avatar.jpg';

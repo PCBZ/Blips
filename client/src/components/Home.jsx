@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { fetchGet } from '../network/fetcher';
 import '../css/Home.css';
 import '../css/Banner.css';
+import '../css/Blip.css';
+import defaultAvatar from '../assets/images/default_avatar.jpg';
 
 function Home() {
   const { user, isAuthenticated } = useAuth(); // Get the user, logout function, and getBlips function from AuthContext
@@ -85,18 +87,25 @@ function Home() {
             <button className='home-page-button' onClick={handleCreateNewBlip}>Create New Blip</button>
           )}
         </div>
-        <ul className="home-page-list">
+        <ul className="blip-list">
           {blips.map((blip) => (
             <li key={blip.id} className="blip-item" onClick={ () => navigate(`/blip/${blip.id}`) }>
-              <label>
-                <strong>{blip.user.username}</strong> at:{" "}
-                {new Date(blip.updatedAt).toLocaleString()}
-              </label>
               <div className="blip-container">
+                <div className="blip-header">
+                  <img 
+                    src={blip.user.avatarUrl || defaultAvatar} 
+                    alt={`${blip.user.username}'s avatar`} 
+                    className="blip-avatar" 
+                  />
+                  <label>
+                    <strong>{blip.user.username}</strong> at:{" "}
+                    {new Date(blip.updatedAt).toLocaleString()}
+                  </label>
+                </div>
                 {blip.imageUrl && (
                   <img src={blip.imageUrl} alt="Blip" className="blip-image"/>
                 )}
-                <p>{blip.content}</p>
+                <label>{blip.content}</label>
               </div>
             </li>
           ))}
