@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { fetchPostWithAuth, fetchPutWithAuth, fetchDeleteWithAuth } from "../security/fetchWithAuth";
 import { useAuth } from "../security/AuthContext";
 import { fetchGet } from "../network/fetcher";
+import "../css/BlipDetail.css";
+import "../css/Comment.css";
 
 function BlipDetail() {
   const { id } = useParams();
@@ -10,7 +12,6 @@ function BlipDetail() {
   const { user } = useAuth();
   const [blip, setBlip] = useState(null);
   const [content, setContent] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -26,7 +27,6 @@ function BlipDetail() {
         const data = await fetchGet(`/api/blips/${id}`);
         setBlip(data);
         setContent(data.content);
-        setImageUrl(data.imageUrl);
         setPreviewImage(data.imageUrl);
       } catch (err) {
         setError(err.message);
@@ -138,107 +138,115 @@ function BlipDetail() {
     }
   }
 
-  if (!blip) return <p>Loading...</p>;
-
   return (
-    <div>
-      <h1>Blip Details</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <p>
-        <strong>Posted by:</strong> {blip.user.username}
-      </p>
-      <p>
-        <strong>Last updated at:</strong>{" "}
-        {new Date(blip.updatedAt).toLocaleString()}
-      </p>
-      {isEditing ? (
-        <form onSubmit={handleUpdate}>
-          <label>
-            Content:
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </label>
-          <br />
-          <label>
-            Image:
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-          </label>
-          <div>
-            <p>Image Preview:</p>
-            {previewImage && <img src={previewImage} alt="Preview" style={{ width: "250px", height: "auto" }} />}
-          </div>
-          <br />
-          <button type="submit">Save</button>
-          <button type="button" onClick={() => setIsEditing(false)}>
-            Cancel
-          </button>
-        </form>
-      ) : (
-        <div>
-          <p>{blip.content}</p>
-          <div>
-            {blip.imageUrl && <img src={blip.imageUrl} alt="Blip" style={{ width: "250px", height: "auto" }}/>}
-          </div>
-          {user && user.id === blip.user.id && (
-            <>
-              <button onClick={() => setIsEditing(true)}>Edit</button>
-              <button onClick={handleDelete}>Delete</button>
-            </>
-          )}
-        </div>
-      )}
-
-      <h2>Comments</h2>
-      {comments.length > 0 ? (
-        <ul>
-          {comments.map((comment) => (
-            <li key={comment.id}>
-              <p>{comment.content}</p>
-                <small>
-                  Posted by <strong>{comment.user.username}</strong> at:{" "}
-                  {new Date(comment.updatedAt).toLocaleString()}
-                </small>
-                {user && user.id === comment.user.id && (
-                  <div>
-                    <button onClick={() => handleEditComment(comment)}>Edit</button>
-                    <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-                    {editingCommentId === comment.id && (
-                      <div>
-                        <textarea
-                          value={editingCommentContent}
-                          onChange={(e) => setEditingCommentContent(e.target.value)}
-                        />
-                        <br />
-                        <button type="submit" onClick={handleUpdateComment}>
-                          Save
-                        </button>
-                        <button type="button" onClick={() => setEditingCommentId(null)}>
-                          Cancel
-                        </button>
+    <div className="blip-detail-wrapper-parent">
+      <div className="blip-detail-wrapper">
+        <h1>Blip Details</h1>
+        {error && !blip ? (
+          <p style={{ color: "red" }}>{error}</p> // Display error if no blip is available
+        ) : (
+          <>
+            {blip && (
+              <>
+                {isEditing ? (
+                  <form className="detail-edit-container" onSubmit={handleUpdate}>
+                    <textarea className="detail-edit-textarea"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                    />
+                    <br />
+                    <label>
+                      Image:
+                      <input type="file" accept="image/*" onChange={handleImageChange} />
+                    </label>
+                    {previewImage && (
+                      <img className="detail-blip-image" src={previewImage} alt="Preview" />
+                    )}
+                    <div className="detail-edit-button-container">
+                      <button className="detail-blip-button" type="submit">save</button>
+                      <button className="detail-blip-button" type="button" onClick={() => setIsEditing(false)}>cancel</button>
+                    </div>
+                  </form>
+                ) : (
+                  <div class='detail-blip-box'>
+                    <label>
+                      <strong>{blip.user.username}</strong> at:{" "}
+                      {new Date(blip.updatedAt).toLocaleString()}
+                    </label>
+                    <div className="detail-blip-container">
+                      {blip.imageUrl && (
+                      <img src={blip.imageUrl} alt="Blip" className="detail-blip-image"/>
+                      )}
+                      <p className="detail-blip-content">{blip.content}</p>
+                    </div>
+                    {user && user.id === blip.user.id && (
+                      <div className="detail-edit-button-container">
+                        <button className="detail-blip-button" onClick={() => setIsEditing(true)}>edit</button>
+                        <button className="detail-blip-button" onClick={handleDelete}>delete</button>
                       </div>
                     )}
                   </div>
                 )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No comments yet.</p>
-      )}
+              </>
+            )}
+    
+            {/* Comments Section */}
+            <h2>Comments</h2>
+            <div className="comment-container">
+            {comments.length > 0 ? (
+              <ul className="comment-list">
+                {comments.map((comment) => (
+                  <li key={comment.id} className="comment-item">
+                    <p className="comment-content">{comment.content}</p>
+                    <small className="comment-meta">
+                      <strong>{comment.user.username}</strong> at:{" "}
+                      {new Date(comment.updatedAt).toLocaleString()}
+                    </small>
+                    {user && user.id === comment.user.id && (
+                      <div className="comment-actions">
+                        <div className="buttons-container">
+                          <button onClick={() => handleEditComment(comment)}>edit</button>
+                          <button onClick={() => handleDeleteComment(comment.id)}>delete</button>
+                        </div>
+                        {editingCommentId === comment.id && (
+                          <div className="comment-edit">
+                            <textarea
+                              value={editingCommentContent}
+                              onChange={(e) => setEditingCommentContent(e.target.value)}
+                            />
+                            <div className="buttons-container">
+                              <button type="submit" onClick={handleUpdateComment}>save</button>
+                              <button type="button" onClick={() => setEditingCommentId(null)}>cancel</button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No comments yet.</p>
+            )}
 
-      <form onSubmit={handleAddComment}>
-        <textarea
-          value={newCommentContent}
-          onChange={(e) => setNewCommentContent(e.target.value)}
-          placeholder="Write a comment..."
-        />
-        <br />
-        <button type="submit">Add Comment</button>
-      </form>
+            <form onSubmit={handleAddComment} className="comment-form">
+              <textarea
+                value={newCommentContent}
+                onChange={(e) => setNewCommentContent(e.target.value)}
+                placeholder="Write a comment..."
+                className="new-comment-textarea"
+              />
+              <button type="submit" className="add-comment-button">Add Comment</button>
+            </form>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
+
 }
+
+
 
 export default BlipDetail;

@@ -110,10 +110,7 @@
 }
 
 .error-message {
-  color: red;
-  font-size: 0.9em;
   margin-bottom: 20px;
-  text-align: center;
 }
 
 /* Responsive design tweaks */
