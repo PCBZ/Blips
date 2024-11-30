@@ -74,10 +74,10 @@ function Home() {
       <h1 className='home-page-h1'>Blips</h1>
       <div className='home-page-blip-list-container'>
         <div className='home-page-blip-header'>
-          {error && <p style={{color: 'red'}}>{error}</p>}
+          {error && <p className='error-message'>{error}</p>}
           {user && (
             <div>
-              <p>Hello, {user.username}!</p>
+              <label>Hello, {user.username}!</label>
             </div>
           )}
           {!user && (
@@ -89,13 +89,13 @@ function Home() {
         </div>
         <ul className="blip-list">
           {blips.map((blip) => (
-            <li key={blip.id} className="blip-item" onClick={ () => navigate(`/blip/${blip.id}`) }>
-              <div className="blip-container">
+            <li key={blip.id} className="blip-item">
+              <div className="blip-container" onClick={ () => navigate(`/blip/${blip.id}`) }>
                 <div className="blip-header">
                   <img 
                     src={blip.user.avatarUrl || defaultAvatar} 
                     alt={`${blip.user.username}'s avatar`} 
-                    className="blip-avatar" 
+                    className="blip-avatar"
                   />
                   <label>
                     <strong>{blip.user.username}</strong> at:{" "}

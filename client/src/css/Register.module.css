@@ -17,10 +17,6 @@
   margin-bottom: 15px;
 }
 
-.error_message {
-  margin-bottom: 15px;
-}
-
 .form_container {
   display: flex;
   flex-wrap: wrap;

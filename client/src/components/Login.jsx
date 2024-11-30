@@ -25,7 +25,7 @@ function Login() {
       <div className={styles.title_container}>
         <h2>Login</h2>
       </div>
-      {error && <p className={styles.error_message}>{error}</p>} {/* Display error if any */}
+      {error && <p className="error-message">{error}</p>} {/* Display error if any */}
       <form onSubmit={handleLogin} className={styles.form_container}>
         <div className={styles.row}>
           <div className={styles.col_half}>

@@ -107,7 +107,6 @@ export const updateBlip = async (req, res) => {
 
 export const deleteBlip = async (req, res) => {
   const { id } = req.params;
-  const { content, imageUrl } = req.body;
   const userId = req.userId;
 
   try {

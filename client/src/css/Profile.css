@@ -55,6 +55,7 @@
   height: 100px;
   object-fit: cover;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .profile-info-container {

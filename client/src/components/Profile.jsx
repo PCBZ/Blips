@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { fetchGetWithAuth, fetchPutWithAuth } from '../security/fetchWithAuth';
+import { fetchPutWithAuth } from '../security/fetchWithAuth';
+import { fetchGet } from '../network/fetcher';
 import { DEFAULT_AVATAR } from '../config/constants';
 import '../css/Profile.css';
 import '../css/Blip.css';
@@ -18,7 +19,7 @@ function Profile() {
   useEffect(() => {
     const fetchBlips = async () => {
       try {
-        const data = await fetchGetWithAuth(`/api/blips?userId=${user.id}`);
+        const data = await fetchGet(`/api/blips?userId=${user.id}`);
         setBlips(data);
       } catch (err) {
         setError(err.message);
@@ -86,13 +87,12 @@ function Profile() {
           {user ? (
             <div className='profile-header-card'>
               <div className="profile-avatar-container">
-                <div onClick={handleAvatarClick} style={{ cursor: 'pointer' }}>
-                  <img
-                    src={previewAvatar || user.avatarUrl || DEFAULT_AVATAR}
-                    alt="Avatar"
-                    className='profile-avatar'
-                  />
-                </div>
+                <img
+                  src={previewAvatar || user.avatarUrl || DEFAULT_AVATAR}
+                  alt="Avatar"
+                  className='profile-avatar'
+                  onClick={handleAvatarClick}
+                />
                 {showUpload && (
                   <input
                     type="file"
@@ -117,7 +117,7 @@ function Profile() {
             <p>Redirecting to login...</p>
           )}
         </div>
-        {error && <p>{error}</p>}
+        {error && <p className='error-message'>{error}</p>}
 
         <h2>Your Blips</h2>
         <ul className='blip-list'>

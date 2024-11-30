@@ -144,7 +144,7 @@ function BlipDetail() {
       <div className="blip-detail-wrapper">
         <h1>Blip Details</h1>
         {error && !blip ? (
-          <p style={{ color: "red" }}>{error}</p> // Display error if no blip is available
+          <p style="error-message">{error}</p>
         ) : (
           <>
             {blip && (

@@ -33,7 +33,7 @@ function Register() {
       <div className={styles.title_container}>
         <h2>Register</h2>
       </div>
-      {error && <p className={styles.error_message}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleRegister} className={styles.form_container}>
         <div className={styles.register_input_field}>
           <input

@@ -85,7 +85,7 @@ const NewBlipPage = () => {
           </div>
           <button type="submit" className={styles.submitBtn}>Post Blip</button>
         </form>
-        {error && <p className={styles.errorMessage}>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
       </div>
     </div>
   );
