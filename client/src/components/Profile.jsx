@@ -102,15 +102,15 @@ function Profile() {
                 )}
                 {previewAvatar && (
                   <div className='profile-button-container'>
-                    <button className='profile-edit-button' onClick={handleSave}>Save</button>
-                    <button className='profile-edit-button' onClick={handleCancel}>Cancel</button>
+                    <button className='small-button' onClick={handleSave}>save</button>
+                    <button className='small-button' onClick={handleCancel}>cancel</button>
                   </div>
                 )}
               </div>
               <div className='profile-info-container'>
                 <label><strong>Name:</strong> {user.username}</label>
                 <label><strong>Email:</strong> {user.email}</label>
-                <button className='profile-button' onClick={handleLogout}>Logout</button>
+                <button className='big-button' onClick={handleLogout}>Logout</button>
               </div>
             </div>
           ) : (

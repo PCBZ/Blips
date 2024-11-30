@@ -29,21 +29,6 @@
   color: #777;
 }
 
-.comment-actions button {
-  margin-right: 10px;
-  padding: 5px 10px;
-  font-size: 14px;
-  border: none;
-  background-color: #0056b3;
-  color: white;
-  cursor: pointer;
-  border-radius: 3px;
-}
-
-.comment-actions button:hover {
-  background-color: #003f7f;
-}
-
 /* Editing Comment */
 .comment-edit {
   margin-top: 10px;
@@ -94,19 +79,4 @@
 .new-comment-textarea:focus {
   border: 1px solid #0056b3;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.add-comment-button {
-  margin-top: 10px;
-  padding: 10px 15px;
-  font-size: 14px;
-  color: white;
-  background-color: #0056b3;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.add-comment-button:hover {
-  background-color: #003f7f;
 }

@@ -3,6 +3,35 @@
   font-size: 0.9em;
 }
 
+.big-button {
+  background-color: #0056b3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1em;
+  margin-top: 10px;
+}
+
+.big-button:hover {
+  background-color: #003f7f;
+}
+
+.small-button {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  background-color: #0056b3;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.small-button:hover {
+  background-color: #003f7f;
+}
+
 body {
   font-family: Verdana, Geneva, sans-serif;
   background: #f2f2f2;

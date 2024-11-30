@@ -81,10 +81,10 @@ function Home() {
             </div>
           )}
           {!user && (
-            <button className='home-page-button' onClick={handleNavigateToLogin}>Login</button>
+            <button className='big-button' onClick={handleNavigateToLogin}>Login</button>
           )}
           {user && (
-            <button className='home-page-button' onClick={handleCreateNewBlip}>Create New Blip</button>
+            <button className='big-button' onClick={handleCreateNewBlip}>Create New Blip</button>
           )}
         </div>
         <ul className="blip-list">

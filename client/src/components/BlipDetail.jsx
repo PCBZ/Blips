@@ -154,17 +154,15 @@ function BlipDetail() {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                     />
-                    <br />
                     <label>
-                      Image:
                       <input type="file" accept="image/*" onChange={handleImageChange} />
                     </label>
                     {previewImage && (
-                      <img className="detail-blip-image" src={previewImage} alt="Preview" />
+                      <img className="blip-image" src={previewImage} alt="Preview" />
                     )}
                     <div className="detail-edit-button-container">
-                      <button className="detail-blip-button" type="submit">save</button>
-                      <button className="detail-blip-button" type="button" onClick={() => setIsEditing(false)}>cancel</button>
+                      <button className="small-button" type="submit">save</button>
+                      <button className="small-button" type="button" onClick={() => setIsEditing(false)}>cancel</button>
                     </div>
                   </form>
                 ) : (
@@ -198,8 +196,8 @@ function BlipDetail() {
                     <label>{blip.content}</label>
                     {user && user.id === blip.user.id && (
                       <div className="detail-edit-button-container">
-                        <button className="detail-blip-button" onClick={() => setIsEditing(true)}>edit</button>
-                        <button className="detail-blip-button" onClick={handleDelete}>delete</button>
+                        <button className="small-button" onClick={() => setIsEditing(true)}>edit</button>
+                        <button className="small-button" onClick={handleDelete}>delete</button>
                       </div>
                     )}
                   </div>
@@ -222,8 +220,8 @@ function BlipDetail() {
                     {user && user.id === comment.user.id && (
                       <div className="comment-actions">
                         <div className="buttons-container">
-                          <button onClick={() => handleEditComment(comment)}>edit</button>
-                          <button onClick={() => handleDeleteComment(comment.id)}>delete</button>
+                          <button className="small-button" onClick={() => handleEditComment(comment)}>edit</button>
+                          <button className="small-button" onClick={() => handleDeleteComment(comment.id)}>delete</button>
                         </div>
                         {editingCommentId === comment.id && (
                           <div className="comment-edit">
@@ -232,8 +230,8 @@ function BlipDetail() {
                               onChange={(e) => setEditingCommentContent(e.target.value)}
                             />
                             <div className="buttons-container">
-                              <button type="submit" onClick={handleUpdateComment}>save</button>
-                              <button type="button" onClick={() => setEditingCommentId(null)}>cancel</button>
+                              <button className="small-button" onClick={handleUpdateComment}>save</button>
+                              <button className="small-button" onClick={() => setEditingCommentId(null)}>cancel</button>
                             </div>
                           </div>
                         )}
@@ -253,7 +251,7 @@ function BlipDetail() {
                 placeholder="Write a comment..."
                 className="new-comment-textarea"
               />
-              <button type="submit" className="add-comment-button">Add Comment</button>
+              <button type="submit" className="big-button">Add Comment</button>
             </form>
             </div>
           </>
