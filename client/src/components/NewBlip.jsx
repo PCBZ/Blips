@@ -72,9 +72,6 @@ const NewBlipPage = () => {
             </div>
           )}
           <div className={styles.formGroup}>
-            <label htmlFor="imageFile" className={styles.label}>
-              Select Image (optional):
-            </label>
             <input
               id="imageFile"
               type="file"
