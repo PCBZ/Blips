@@ -6,7 +6,7 @@ import { fetchGet } from "../network/fetcher";
 import "../css/BlipDetail.css";
 import "../css/Comment.css";
 import "../css/Blip.css";
-import { DEFAULT_AVATAR } from "../config/constants";
+import defaultAvatar from "../assets/images/default_avatar.jpg";
 
 function BlipDetail() {
   const { id } = useParams();
@@ -169,7 +169,7 @@ function BlipDetail() {
                   <div class='blip-container'>
                     <div className="blip-header">
                       <img 
-                        src={blip.user.avatarUrl || DEFAULT_AVATAR} 
+                        src={blip.user.avatarUrl || defaultAvatar} 
                         alt={`${blip.user.username}'s avatar`} 
                         className="blip-avatar"
                         onClick={ (e) => {

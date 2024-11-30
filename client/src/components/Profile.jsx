@@ -3,7 +3,7 @@ import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { fetchPutWithAuth } from '../security/fetchWithAuth';
 import { fetchGet } from '../network/fetcher';
-import { DEFAULT_AVATAR } from '../config/constants';
+import defaultAvatar from '../assets/images/default_avatar.jpg';
 import '../css/Profile.css';
 import '../css/Blip.css';
 
@@ -88,7 +88,7 @@ function Profile() {
             <div className='profile-header-card'>
               <div className="profile-avatar-container">
                 <img
-                  src={previewAvatar || user.avatarUrl || DEFAULT_AVATAR}
+                  src={previewAvatar || user.avatarUrl || defaultAvatar}
                   alt="Avatar"
                   className='profile-avatar'
                   onClick={handleAvatarClick}

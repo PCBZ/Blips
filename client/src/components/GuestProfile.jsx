@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { fetchGet } from '../network/fetcher';
-import { DEFAULT_AVATAR } from '../config/constants';
+import defaultAvater from '../assets/images/default_avatar.jpg';
 import '../css/Profile.css';
 import '../css/Blip.css';
 
@@ -36,7 +36,7 @@ function GuestProfile() {
           <div className='profile-header-card'>
             <div className="profile-avatar-container">
               <img
-                src={avatarUrl || DEFAULT_AVATAR}
+                src={avatarUrl || defaultAvater}
                 alt="Avatar"
                 className='profile-avatar'
               />
