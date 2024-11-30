@@ -212,7 +212,7 @@ function BlipDetail() {
               <ul className="comment-list">
                 {comments.map((comment) => (
                   <li key={comment.id} className="comment-item">
-                    <label className="comment-content">{comment.content}</label>
+                    <p className="comment-content">{comment.content}</p>
                     <small className="comment-meta">
                       <strong>{comment.user.username}</strong> at:{" "}
                       {new Date(comment.updatedAt).toLocaleString()}
