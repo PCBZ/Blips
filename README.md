@@ -42,7 +42,7 @@ The backend is implemented in the api/ folder and provides RESTful endpoints for
 | `/api/comments?blipid=id` | GET    | Retrieves comments for a specific blip.                |
 | `/api/comments?blipid=id` | POST   | Adds a comment to a specific blip.                     |
 | `/api/comments/:id`       | PUT    | Updates a comment.                                     |
-| `/api/comments/:id`       | DElETE | Deletes a comment.                                     |
+| `/api/comments/:id`       | DELETE | Deletes a comment.                                     |
 
 ### Prerequisites
 - **Node.js installed**
@@ -87,18 +87,18 @@ The backend is implemented in the api/ folder and provides RESTful endpoints for
    ```
 
 ## Example Usage
-	1.	Register or log in using the provided forms.
-	2.	View your profile, upload a new avatar, and browse your posts.
-	3.	Create a new blip and see it appear in the feed.
-	4.	Comment on your blips or others’.
-	5.	Log out when done.
+1. Register or log in using the provided forms.
+2. View your profile, upload a new avatar, and browse your posts.
+3. Create a new blip and see it appear in the feed.
+4. Comment on your blips or others’.
+5. Log out when done.
 
 ### Screenshot
 | Screen                  | Screenshot Link   |
 |-------------------------|-------------------|
-| Login Page              | <img width="349" alt="image" src="https://github.com/user-attachments/assets/95a449ae-0bd7-4666-8f24-b0a3168a06df"> |
-| Register Page           | <img width="344" alt="image" src="https://github.com/user-attachments/assets/debcefbe-e219-43e0-bab8-11e5e839bd63"> |
-| Home Page               | <img width="749" alt="Screenshot 2024-11-25 at 17 43 03" src="https://github.com/user-attachments/assets/09d09a8a-a03d-458a-ba3d-f67265b70a8c"> |
-| Profile Page            | <img width="527" alt="image" src="https://github.com/user-attachments/assets/f3aea166-98e5-4961-868c-b4cb127024f8"> |
-| Blip Creation Page      | <img width="388" alt="image" src="https://github.com/user-attachments/assets/f625dda2-3617-4340-9cae-97b65eed8237">
- |
+| Register Page           | <img width="280" alt="Screenshot 2024-11-29 at 22 10 50" src="https://github.com/user-attachments/assets/f0ad99c9-e4df-4887-ab1e-2d81475be2bf"> |
+| Login Page              | <img width="280" alt="Screenshot 2024-11-29 at 22 12 55" src="https://github.com/user-attachments/assets/e64a0f6d-60c4-49f3-b5c2-239efb384053"> |
+| Home Page               | <img width="283" alt="Screenshot 2024-11-29 at 21 54 39" src="https://github.com/user-attachments/assets/51d4a6c1-c5d3-4260-a2dc-a8221f376cb8"> |
+| Blip Detail Page        | <img width="281" alt="Screenshot 2024-11-29 at 22 09 03" src="https://github.com/user-attachments/assets/b2c41301-1015-406c-a233-5f76e67b00b7"> |
+| Profile Page            | <img width="282" alt="Screenshot 2024-11-29 at 22 09 57" src="https://github.com/user-attachments/assets/846a9cdc-142f-4dba-8e0d-5c406a63bce2"> |
+| Blip Post Page          | <img width="281" alt="Screenshot 2024-11-29 at 21 58 43" src="https://github.com/user-attachments/assets/deae6f46-0ba9-4bb1-89f2-da46dd9a0017"> |
