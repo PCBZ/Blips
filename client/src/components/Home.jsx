@@ -15,6 +15,8 @@ function Home() {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
+    document.title = 'Blip - Home';
+
     const fetchBlips = async () => {
       try {
         const data = await fetchGet('/api/blips');
