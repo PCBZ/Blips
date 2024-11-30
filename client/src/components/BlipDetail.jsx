@@ -43,7 +43,6 @@ function BlipDetail() {
         setError(err.message);
       }
     };
-
     fetchBlip();
     fetchComments();
   }, [id]);
@@ -174,7 +173,19 @@ function BlipDetail() {
                       <img 
                         src={blip.user.avatarUrl || DEFAULT_AVATAR} 
                         alt={`${blip.user.username}'s avatar`} 
-                      className="blip-avatar" 
+                        className="blip-avatar"
+                        onClick={ (e) => {
+                          e.stopPropagation();
+                          if (user && blip.user.id === user.id) {
+                            navigate('/profile');
+                          } else {
+                            navigate(`/guest-profile/${blip.user.id}`, { 
+                              state: { 
+                                username: blip.user.username, 
+                                avatarUrl: blip.user.avatarUrl } 
+                            });
+                          }
+                        }}
                       />
                       <label>
                         <strong>{blip.user.username}</strong> at:{" "}

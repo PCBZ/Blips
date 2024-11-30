@@ -26,7 +26,7 @@ function App() {
         <Route path="/new-blip" element={<NewBlip />} />
         <Route path="/blip/:id" element={<BlipDetail />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/GuestProfile/:id" element={<GuestProfile />}/>
+        <Route path="/guest-profile/:id" element={<GuestProfile />}/>
       </Routes>
     </div>
   );

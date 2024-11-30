@@ -96,6 +96,20 @@ function Home() {
                     src={blip.user.avatarUrl || defaultAvatar} 
                     alt={`${blip.user.username}'s avatar`} 
                     className="blip-avatar"
+                    onClick={
+                      (e) => {
+                        e.stopPropagation();
+                        if (user && blip.user.id === user.id) {
+                          navigate('/profile');
+                        } else {
+                          navigate(`/guest-profile/${blip.user.id}`, { 
+                            state: { 
+                              username: blip.user.username, 
+                              avatarUrl: blip.user.avatarUrl } 
+                          });
+                        }
+                      }
+                    }
                   />
                   <label>
                     <strong>{blip.user.username}</strong> at:{" "}
