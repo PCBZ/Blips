@@ -29,7 +29,7 @@ function Home() {
       try {
         const response = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=397de73ade064971aedd51131288c900'); // Replace with your API key
         const data = await response.json();
-        setNews(data.articles);
+        setNews(data.articles.filter(article => article.urlToImage && article.title !== "[Remove]"));
       } catch (err) {
         setError(err.message);
       }
