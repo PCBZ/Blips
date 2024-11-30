@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../security/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/Register.module.css';
@@ -12,6 +12,10 @@ function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    document.title = 'Blip - Register';
+  }, []);
 
   const handleRegister = async (e) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../security/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../css/Login.module.css';
@@ -9,6 +9,10 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    document.title = 'Blip - Login';
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();

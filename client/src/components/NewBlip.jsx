@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPostWithAuth } from "../security/fetchWithAuth.js";
 import styles from "../css/NewBlip.module.css";
@@ -10,6 +10,10 @@ const NewBlipPage = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Blip - New Blip";
+  }, []);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];

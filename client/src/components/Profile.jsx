@@ -17,6 +17,8 @@ function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'Blip - Profile';
+
     const fetchBlips = async () => {
       try {
         const data = await fetchGet(`/api/blips?userId=${user.id}`);

@@ -17,6 +17,8 @@ function GuestProfile() {
   const { username, avatarUrl } = location.state;
 
   useEffect(() => {
+    document.title = 'Blip - Profile';
+
     const fetchBlips = async (id) => {
       try {
         const data = await fetchGet(`/api/blips?userId=${id}`);

@@ -24,6 +24,7 @@ function BlipDetail() {
   const [editingCommentContent, setEditingCommentContent] = useState("");
 
   useEffect(() => {
+    document.title = "Blip - Blip Detail";
     const fetchBlip = async () => {
       try {
         const data = await fetchGet(`/api/blips/${id}`);
