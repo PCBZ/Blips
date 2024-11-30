@@ -6,6 +6,7 @@ import Register from './components/Register';
 import NewBlip from './components/NewBlip';
 import BlipDetail from "./components/BlipDetail";
 import Profile from './components/Profile';
+import GuestProfile from './components/GuestProfile';
 import './App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/new-blip" element={<NewBlip />} />
         <Route path="/blip/:id" element={<BlipDetail />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/GuestProfile/:id" element={<GuestProfile />}/>
       </Routes>
     </div>
   );
