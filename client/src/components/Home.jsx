@@ -21,10 +21,8 @@ function Home() {
       try {
         const data = await fetchGet('/api/blips');
         setBlips(data);
-        console.log(data);
       } catch (err) {
         setError(err.message);
-        console.log(err.message);
       }
     };
     const fetchNews = async () => {
