@@ -44,6 +44,43 @@ The backend is implemented in the api/ folder and provides RESTful endpoints for
 | `/api/comments/:id`       | PUT    | Updates a comment.                                     |
 | `/api/comments/:id`       | DELETE | Deletes a comment.                                     |
 
+## Database Schema
+### User Table
+| Field      | Type      | Constraints                          |
+|------------|-----------|--------------------------------------|
+| `id`       | `Int`     | Primary Key, Auto-increment          |
+| `username` | `String`  | Unique                               |
+| `email`    | `String`  | Unique                               |
+| `avatarUrl`| `String?` | Nullable                             |
+| `password` | `String`  |                                      |
+| `createdAt`| `DateTime`| Default: `now()`                     |
+| `updatedAt`| `DateTime`| Auto-update on change                |
+| `Blip`     | Relation  | One-to-Many with `Blip`              |
+| `Comment`  | Relation  | One-to-Many with `Comment`           |
+
+### Blip Table
+| Field      | Type      | Constraints                          |
+|------------|-----------|--------------------------------------|
+| `id`       | `Int`     | Primary Key, Auto-increment          |
+| `content`  | `String`  |                                      |
+| `imageUrl` | `String?` | Nullable                             |
+| `userId`   | `Int`     | Foreign Key -> `User.id`             |
+| `createdAt`| `DateTime`| Default: `now()`                     |
+| `updatedAt`| `DateTime`| Auto-update on change                |
+| `Comment`  | Relation  | One-to-Many with `Comment`           |
+
+### Comment Table
+| Field      | Type      | Constraints                          |
+|------------|-----------|--------------------------------------|
+| `id`       | `Int`     | Primary Key, Auto-increment          |
+| `content`  | `String`  |                                      |
+| `blipId`   | `Int`     | Foreign Key -> `Blip.id`             |
+| `userId`   | `Int`     | Foreign Key -> `User.id`             |
+| `createdAt`| `DateTime`| Default: `now()`                     |
+| `updatedAt`| `DateTime`| Auto-update on change                |
+| `user`     | Relation  | Many-to-One with `User`              |
+| `blip`     | Relation  | Many-to-One with `Blip`              |
+
 ### Prerequisites
 - **Node.js installed**
 - **Prisma ORM**
