@@ -10,6 +10,7 @@ Blip is a React-based social network application where users can share their tho
  
 - **Blips Viewing and Interacting**:
   - A list of blips showing in home page, enabling users view.
+  - At the top of the page, it shows top news item from google news API.
   - View blip details, including comments and the timestamp of creation or updates.
     
 - **Profile Management**:
