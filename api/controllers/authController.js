@@ -25,7 +25,7 @@ export const register = async (req, res) => {
     });
 
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.cookie('token', token, {httpOnly: true, maxAge: 3600000})
+    res.cookie('token', token, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true })
 
     res.status(201).json({
       user: {
@@ -55,7 +55,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.cookie('token', token, {httpOnly: true, maxAge: 3600000})
+    res.cookie('token', token, { httpOnly: true, maxAge: 3600000, sameSite: 'none', secure: true })
 
     const userData = {
       id: user.id,

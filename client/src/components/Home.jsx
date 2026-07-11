@@ -27,9 +27,11 @@ function Home() {
     };
     const fetchNews = async () => {
       try {
-        const response = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=397de73ade064971aedd51131288c900'); // Replace with your API key
+        const apiKey = process.env.REACT_APP_NEWS_API_KEY;
+        if (!apiKey) return;
+        const response = await fetch(`https://gnews.io/api/v4/top-headlines?country=us&lang=en&max=10&token=${apiKey}`);
         const data = await response.json();
-        setNews(data.articles.filter(article => article.urlToImage && article.title !== "[Remove]"));
+        setNews((data.articles || []).filter(article => article.image));
       } catch (err) {
         setError(err.message);
       }
@@ -57,11 +59,11 @@ function Home() {
       <div className="banner-container">
         {news && news.map((article, index) => (
           <div key={index} className="banner-item" onClick={() => window.open(article.url, '_blank')}>
-            {article.urlToImage && (
-              <img 
-                src={article.urlToImage} 
-                alt="Banner" 
-                className="banner-image" 
+            {article.image && (
+              <img
+                src={article.image}
+                alt="Banner"
+                className="banner-image"
               />
             )}
             <div className="banner-text">
