@@ -1,11 +1,5 @@
 import prisma from "../models/prismaClient.js";
-import path from "path";
-import fs from "fs";
-
-const uploadsDir = path.resolve("uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
+import { uploadToR2, deleteFromR2 } from "../middlewares/r2.js";
 
 export const getBlips = async (req, res) => {
   const { userId } = req.query;
@@ -52,7 +46,7 @@ export const createBlip = async (req, res) => {
   }
 
   try {
-    const imageUrl = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : null;
+    const imageUrl = req.file ? await uploadToR2(req.file) : null;
 
     const newBlip = await prisma.blip.create({
       data: {
@@ -82,13 +76,10 @@ export const updateBlip = async (req, res) => {
       return res.status(403).json({ error: "You are not allowed to edit this blip." });
     }
 
-    const imageUrl = req.file ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}` : existingBlip.imageUrl;
+    const imageUrl = req.file ? await uploadToR2(req.file) : existingBlip.imageUrl;
 
     if (req.file && existingBlip.imageUrl) {
-      const oldImagePath = path.join("uploads", path.basename(existingBlip.imageUrl));
-      if (fs.existsSync(oldImagePath)) {
-        fs.unlinkSync(oldImagePath);
-      }
+      await deleteFromR2(existingBlip.imageUrl);
     }
     const updatedBlip = await prisma.blip.update({
       where: { id: Number(id) },
@@ -118,10 +109,7 @@ export const deleteBlip = async (req, res) => {
       return res.status(403).json({ error: "You are not allowed to delete this blip." });
     }
     if (existingBlip.imageUrl) {
-      const oldImagePath = path.join("uploads", path.basename(existingBlip.imageUrl));
-      if (fs.existsSync(oldImagePath)) {
-        fs.unlinkSync(oldImagePath);
-      }
+      await deleteFromR2(existingBlip.imageUrl);
     }
     await prisma.comment.deleteMany({
       where: { blipId: Number(id) },
