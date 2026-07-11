@@ -16,5 +16,17 @@ app.use("/api/auth", authRoutes);
 app.use("/api/blips", blipRoutes);
 app.use("/api/comments", commentRoutes);
 
+app.get("/api/news", async (req, res) => {
+  try {
+    const response = await fetch(
+      `https://gnews.io/api/v4/top-headlines?country=us&lang=en&max=10&token=${process.env.NEWS_API_KEY}`
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch {
+    res.status(500).json({ articles: [] });
+  }
+});
+
 
 export default app;
