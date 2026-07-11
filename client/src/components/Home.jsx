@@ -27,13 +27,11 @@ function Home() {
     };
     const fetchNews = async () => {
       try {
-        const apiKey = process.env.REACT_APP_NEWS_API_KEY;
-        if (!apiKey) return;
-        const response = await fetch(`https://gnews.io/api/v4/top-headlines?country=us&lang=en&max=10&token=${apiKey}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/news`);
         const data = await response.json();
         setNews((data.articles || []).filter(article => article.image));
-      } catch (err) {
-        setError(err.message);
+      } catch {
+        // silently fail — news is non-critical
       }
     };
 
