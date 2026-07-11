@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import multer from "multer";
-import path from "path";
 
 export const requireAuth = (req, res, next) => {
   const token = req.cookies.token;
@@ -26,16 +25,8 @@ export const conditionalMiddleware = (middleware) => {
 };
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads/"); // Directory to store uploaded files
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      cb(null, uniqueSuffix + path.extname(file.originalname)); // Generate unique filename
-    },
-  }),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
