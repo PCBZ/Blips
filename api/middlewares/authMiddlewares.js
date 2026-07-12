@@ -15,15 +15,6 @@ export const requireAuth = (req, res, next) => {
   }
 };
 
-export const conditionalMiddleware = (middleware) => {
-  return (req, res, next) => {
-    if (req.query.userId) {
-      return middleware(req, res, next);
-    }
-    next();
-  };
-};
-
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
